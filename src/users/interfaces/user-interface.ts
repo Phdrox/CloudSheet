@@ -1,4 +1,4 @@
-export interface User{
+export interface IUser{
     id?:string,
     name:string,
     username:string,
@@ -7,3 +7,5 @@ export interface User{
     createdAt?:Date,
     updateAt?:Date,
 }
+
+export type PostUser=Omit<IUser,'id'|'createdAt'|'updateAt'> 

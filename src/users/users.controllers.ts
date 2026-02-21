@@ -1,6 +1,7 @@
-import { Controller, Get, Param,Body,Post, Put, Delete, } from '@nestjs/common';
+import { Controller, Get, Param,Body,Post, Put, Delete,Headers } from '@nestjs/common';
 import { UsersService } from './users.services';
-import type { User } from './/interfaces/user-interface';
+import type { IUser } from './/interfaces/user-interface';
+import type { PostUser } from './interfaces/user-interface';
 import { UUID } from 'crypto';
 
 @Controller('users')
@@ -13,7 +14,7 @@ export class UserController {
   }
 
   @Post('')
-  createUser(@Body() user:User){
+  async createUser(@Body() user:PostUser){
     return this.usersService.createUser(user)
   }
 
@@ -23,7 +24,7 @@ export class UserController {
   }
 
   @Put(':id')
-  updateUser(@Param('id') id:string, @Body() user:User){
+  updateUser(@Param('id') id:string, @Body() user:IUser){
     return this.usersService.updateUser(id as unknown as UUID, user)
   }
   

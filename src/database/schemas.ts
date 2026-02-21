@@ -5,11 +5,11 @@ import { randomUUID } from "crypto"
 export const users=pgTable('users',{
     id:uuid().primaryKey().$defaultFn(()=>randomUUID()).notNull(),
     name:varchar({length:255}).notNull(),
-    username:varchar({length:100}).notNull(),
-    email:varchar({length:260}).notNull(),
+    username:varchar({length:100}).notNull().unique(),
+    email:varchar({length:260}).notNull().unique(),
     password: text("password").notNull(),
     createdAt: timestamp("created_at",).defaultNow().notNull(),
-    updateAt: timestamp("updated_at",).$onUpdate(()=>new Date).notNull(),
+    updateAt: timestamp("updated_at",).$onUpdate(()=>new Date()).notNull(),
 })
 
 export const account=pgTable('account',{
@@ -29,12 +29,12 @@ export const flows=pgTable('expenses',{
     price:real().notNull(),
     date:date().notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    updateAt: timestamp("updated_at").$onUpdate(()=>new Date).notNull(),
+    updateAt: timestamp("updated_at").$onUpdate(()=>new Date()).notNull(),
 })
 
-export const categories=pgTable('categories',{
+export const categories=pgTable('category',{
     id:integer().primaryKey().notNull(),
-    type:varchar({length:50}).notNull()
+    type_categorie:varchar({length:50}).notNull().unique()
 })
 
 export const goal=pgTable('goal',{
@@ -44,5 +44,5 @@ export const goal=pgTable('goal',{
     value:real(),
     have:real(),
     createdAt: timestamp("created_at",).defaultNow().notNull(),
-    updateAt: timestamp().$onUpdate(()=>new Date).notNull(),
+    updateAt: timestamp("updated_at").$onUpdate(()=>new Date()).notNull(),
 })
