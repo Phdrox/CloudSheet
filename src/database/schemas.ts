@@ -2,6 +2,7 @@ import {pgTable,varchar,timestamp,text,real,date,integer,uuid} from "drizzle-orm
 import { randomUUID } from "crypto"
 
 
+
 export const users=pgTable('users',{
     id:uuid().primaryKey().$defaultFn(()=>randomUUID()).notNull(),
     name:varchar({length:255}).notNull(),
@@ -40,6 +41,7 @@ export const categories=pgTable('category',{
 export const goal=pgTable('goal',{
     id:uuid().primaryKey().$defaultFn(()=>randomUUID()).notNull(),
     id_user:uuid().references(()=>users.id),
+    id_categories:integer().references(()=>categories.id),
     name:varchar({length:150}).notNull(),
     value:real(),
     have:real(),

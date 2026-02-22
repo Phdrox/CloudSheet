@@ -1,9 +1,9 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "43c603c0-2d81-42b6-8c8a-d76b2ce647fb",
+  "id": "d40817da-5219-49f4-b325-15f5e9e66067",
   "prevIds": [
-    "5d6dfde5-6987-430c-8d34-85c2b2edef45"
+    "00000000-0000-0000-0000-000000000000"
   ],
   "ddl": [
     {
@@ -271,6 +271,19 @@
       "table": "goal"
     },
     {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "id_categories",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "goal"
+    },
+    {
       "type": "varchar(150)",
       "typeSchema": null,
       "notNull": true,
@@ -473,6 +486,23 @@
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "goal_id_user_users_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "goal"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "id_categories"
+      ],
+      "schemaTo": "public",
+      "tableTo": "category",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "goal_id_categories_category_id_fkey",
       "entityType": "fks",
       "schema": "public",
       "table": "goal"
