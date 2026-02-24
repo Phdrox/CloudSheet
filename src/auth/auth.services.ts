@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common"
-import {JwtService} from "@nestjs/jwt"
-import { createHash } from "crypto"
 import { db } from "src/database/db"
-import { User } from "../users/interfaces/user-interface"
+import { IUser } from "../users/interfaces/user-interface"
 import { eq } from "drizzle-orm"
 import {  users } from "src/database/schemas"
 import { verify } from "argon2"
 import { betterAuth } from "better-auth"
+import { schemaAuth } from "src/schemas/schemas-zod"
+import type{ IAuth } from "./interfaces/auth-type"
 
 
 @Injectable()
@@ -16,31 +16,35 @@ export class AuthService{
         private auth=betterAuth({emailAndPassword:{enabled:true}})
     ){}
     
-    async login(email,password:string){
-        const user:User= await this.db.select().from(users).where(eq(users.email,email)).first()
+    async login({email,password}:IAuth){
+
+        const validate= await schemaAuth.safeParseAsync({email,password})
+        if(validate.success){
+
+        const user:IUser= await this.db.select().from(users).where(eq(users.email,email)).first()
                 
-        if(!user){
-            return {message:"User not found"}
-        }
+            if(!user){
+                return {message:"User not found"}
+            }
 
-        const isPasswordValid= await verify(user.password,password)
-        if(!isPasswordValid){
-            return  {message:"Invalid credentials"}
-        }
+            const isPasswordValid= await verify(user.password,password)
 
-        try{
+            if(!isPasswordValid){
+                return  {message:"Invalid credentials"}
+            }
+            
             this.auth.api.signInEmail({
                 body:{
-                    email:email,
-                    password:password,
+                    email,
+                    password,
                     rememberMe:true,
                     callbackURL:"/dashboard"
                 }
             })
-        }
-        catch(error){
+        }else{
             return {message:"Error signing in"}
         }
+        
     }
 
    async logout(){

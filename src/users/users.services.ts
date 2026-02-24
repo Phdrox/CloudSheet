@@ -5,17 +5,18 @@ import * as d from "drizzle-orm"
 import { users } from "src/database/schemas" 
 import { UUID } from "crypto"
 import { hash } from "argon2"
+import { schemaUser } from "src/schemas/schemas-zod"
 
 @Injectable()
 export class UsersService{
 
     async createUser(user: IUser){
-        try{
+        const validate= await schemaUser.safeParseAsync(user)
+        if (validate.success){
             await db.insert(users).values({...user,password:await hash(user.password)}).returning()
             return {message:'User created successfully'}
-        }
-       catch(error){
-            return {message:'Error creating user', error} 
+        }else{
+            return {message:'Usuário não cadastrado'}
         }
        }
 
@@ -46,12 +47,13 @@ export class UsersService{
     }
 
     async updateUser(id:UUID,user:IUser){
-        try{
-           await db.update(users).set(user).where(d.eq(users.id,id)).returning()
-           return {message:'User updated successfully'}
+        const validate= await schemaUser.safeParseAsync(user)
+        if(validate.success){
+            await db.update(users).set(user).where(d.eq(users.id,id)).returning()
+            return {message:'Usuário atualizado com sucesso'}
         }
-        catch(error){
-         return {message:'Error updating user', error} 
+        else{
+            return {message:"Usuário não atualizado"}
         }
     }
 

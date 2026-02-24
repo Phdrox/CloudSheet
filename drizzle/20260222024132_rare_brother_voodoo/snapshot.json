@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "d40817da-5219-49f4-b325-15f5e9e66067",
+  "id": "53ca0ebd-4e41-4554-8bad-99ee0630516c",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -108,7 +108,16 @@
       "dimensions": 0,
       "default": null,
       "generated": null,
-      "identity": null,
+      "identity": {
+        "type": "always",
+        "name": "category_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
       "name": "id",
       "entityType": "columns",
       "schema": "public",

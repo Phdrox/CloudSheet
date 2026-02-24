@@ -3,6 +3,7 @@ import { db } from "src/database/db";
 import { IFlows } from "./interfaces/flows-type";
 import { eq } from "drizzle-orm";
 import {categories} from "src/database/schemas"
+import { schemaFlows } from "src/schemas/schemas-zod";
 
 @Injectable()
 export class FlowsServices{
@@ -11,13 +12,14 @@ export class FlowsServices{
    ){}
 
    async createFlow(flows:IFlows){
-    try{
-        await this.db.insert(categories).values(flows).returning()
-        return {message:'Flow created successfully'}
-    }
-    catch(error){
-        return {message:'Error creating flow', error}
-    }
+        const validate= await schemaFlows.safeParseAsync(flows)
+        if(validate.success){
+            await this.db.insert(categories).values(flows).returning()
+            return {message:'Flow created successfully'}
+        }
+        else{
+            return {message:'Error creating flow'}
+        }    
    }
 
    async getFlows(){
@@ -46,12 +48,12 @@ export class FlowsServices{
     }}
 
     async updateFlow(id:number, flows:IFlows){
-        try{
-            await this.db.update(categories).set(flows).where(eq(categories.id,id)).returning()
-            return {message:'Flow updated successfully'}
-        }
-        catch(error){
-            return {message:'Error updating flow', error}
+        const validate= await schemaFlows.safeParseAsync(flows)
+        if(validate.success){
+           await this.db.update(categories).set(flows).where(eq(categories.id,id)).returning()
+           return {message:'Flow updated successfully'}
+        }else{
+            return {message:'Error updating flow'}
         }
     }
 

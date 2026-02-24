@@ -1,8 +1,6 @@
 import {pgTable,varchar,timestamp,text,real,date,integer,uuid} from "drizzle-orm/pg-core"
 import { randomUUID } from "crypto"
 
-
-
 export const users=pgTable('users',{
     id:uuid().primaryKey().$defaultFn(()=>randomUUID()).notNull(),
     name:varchar({length:255}).notNull(),
@@ -21,7 +19,7 @@ export const account=pgTable('account',{
   createdAt: timestamp("created_at").defaultNow().notNull()
 })
 
-export const flows=pgTable('expenses',{
+export const flows=pgTable('flows',{
     id:uuid().primaryKey().$defaultFn(()=>randomUUID()).notNull(),
     id_categorie:integer().references(()=>categories.id),
     name:varchar({length:255}).notNull(),
@@ -34,7 +32,7 @@ export const flows=pgTable('expenses',{
 })
 
 export const categories=pgTable('category',{
-    id:integer().primaryKey().notNull(),
+    id:integer('id').primaryKey().generatedAlwaysAsIdentity(),
     type_categorie:varchar({length:50}).notNull().unique()
 })
 

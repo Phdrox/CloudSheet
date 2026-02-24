@@ -8,10 +8,12 @@ import { GoalServices } from './goal/goal.services';
 import { CategoriesServices } from './categories/categories.services';
 import { GoalController } from './goal/goal.controllers';
 import { CategoryController } from './categories/categories.controllers';
+import { AuthService } from './auth/auth.services';
+import { AuthController } from './auth/auth.controllers';
 
 @Module({
   imports: [ConfigModule.forRoot()],
-  controllers: [UserController,FlowsController,GoalController,CategoryController],
-  providers: [UsersService,FlowsServices,GoalServices,CategoriesServices],
+  controllers: [UserController,FlowsController,GoalController,CategoryController,AuthController],
+  providers: [UsersService,FlowsServices,GoalServices,CategoriesServices,AuthService],
 })
 export class AppModule {}

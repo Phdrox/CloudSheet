@@ -3,6 +3,7 @@ import {db} from "src/database/db";
 import { goal } from "src/database/schemas";
 import type { IGoal } from "./interfaces/goal-type";
 import { eq } from "drizzle-orm";
+import { schemaGoal } from "src/schemas/schemas-zod";
 
 @Injectable()
 export class GoalServices{
@@ -10,14 +11,14 @@ export class GoalServices{
         private readonly db=db
     ){}
 
-    async createGoal(gols:IGoal){
-        try{
-          await db.insert(goal).values(gols).returning()
+    async createGoal(goals:IGoal){
+        const validate=await schemaGoal.safeParseAsync(goals)
+        if(validate.success){
+          await db.insert(goal).values(goals).returning()
           return {message:"Goal create successfuly"}  
-        }
-        catch(error){
-            return {message:"Error when creating goal"}
-        }
+       }else{
+          return {message:"Error when creating goal"}
+       }
     }
 
     async getGoals(){
@@ -47,11 +48,11 @@ export class GoalServices{
     }
 
     async updateGoal(id:string,goals:IGoal){
-        try{
+        const validate=await schemaGoal.safeParseAsync(goals)
+        if(validate.success){
             await db.update(goal).set(goals).where(eq(goal.id,id))
             return{message:"update with successfuly"}
-        }
-        catch(erro){
+        }else{
             return {message:"Error when update goal"}
         }
     }
