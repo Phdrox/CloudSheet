@@ -1,20 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { db } from "src/database/db";
-import { IFlows } from "./interfaces/flows-type";
+import type { IFlows } from "./interfaces/flows-type";
 import { eq } from "drizzle-orm";
-import {categories} from "src/database/schemas"
+import {flows} from "src/database/schemas"
 import { schemaFlows } from "src/schemas/schemas-zod";
 
 @Injectable()
 export class FlowsServices{
-   constructor(
-    private readonly db=db
-   ){}
 
-   async createFlow(flows:IFlows){
-        const validate= await schemaFlows.safeParseAsync(flows)
+   async createFlow(flow:IFlows){
+        const validate= await schemaFlows.safeParseAsync(flow)
         if(validate.success){
-            await this.db.insert(categories).values(flows).returning()
+            await db.insert(flows).values(flow).returning()
             return {message:'Flow created successfully'}
         }
         else{
@@ -24,7 +21,7 @@ export class FlowsServices{
 
    async getFlows(){
     try{
-        const data=await this.db.select().from(categories)
+        const data=await db.select().from(flows)
         if(data.length===0){
             return {message:'No flows found'}
         }
@@ -35,9 +32,9 @@ export class FlowsServices{
     }
    }
 
-   async getFlowById(id:number){
+   async getFlowById(id:string){
     try{
-        const data=await this.db.select().from(categories).where(eq(categories.id,id))
+        const data=await db.select().from(flows).where(eq(flows.id,id))
         if(data.length===0){
             return {message:'Flow not found'}
         }
@@ -47,19 +44,19 @@ export class FlowsServices{
         return {message:'Error getting flow', error}
     }}
 
-    async updateFlow(id:number, flows:IFlows){
-        const validate= await schemaFlows.safeParseAsync(flows)
+    async updateFlow(id:string, flow:IFlows){
+        const validate= await schemaFlows.safeParseAsync(flow)
         if(validate.success){
-           await this.db.update(categories).set(flows).where(eq(categories.id,id)).returning()
+           await db.update(flows).set(flows).where(eq(flows.id,id)).returning()
            return {message:'Flow updated successfully'}
         }else{
             return {message:'Error updating flow'}
         }
     }
 
-    async deleteFlow(id:number){
+    async deleteFlow(id:string){
         try{
-            await this.db.delete(categories).where(eq(categories.id,id)).returning()
+            await db.delete(flows).where(eq(flows.id,id)).returning()
             return {message:'Flow deleted successfully'}
         }
         catch(error){

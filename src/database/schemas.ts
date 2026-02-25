@@ -32,7 +32,7 @@ export const flows=pgTable('flows',{
 })
 
 export const categories=pgTable('category',{
-    id:integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    id:integer('id').primaryKey().generatedAlwaysAsIdentity().unique(),
     type_categorie:varchar({length:50}).notNull().unique()
 })
 

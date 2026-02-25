@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common"
 import { db } from "src/database/db"    
-import { IUser } from "./interfaces/user-interface"
+import type { IUser } from "./interfaces/user-interface"
 import * as d from "drizzle-orm"
 import { users } from "src/database/schemas" 
 import { UUID } from "crypto"

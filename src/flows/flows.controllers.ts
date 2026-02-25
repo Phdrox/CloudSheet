@@ -18,17 +18,17 @@ export class FlowsController{
     }
 
     @Get(':id')
-    async getFlowById(@Param('id') id:number){
+    async getFlowById(@Param('id') id:string){
         return await this.flowsServices.getFlowById(id)
     }
 
     @Put(':id')
-    async updateFlow(@Param('id') id:number, @Body() flows:IFlows){
+    async updateFlow(@Param('id') id:string, @Body() flows:IFlows){
         return await this.flowsServices.updateFlow(id, flows)
     }
 
     @Delete(':id')
-    async deleteFlow(@Param('id') id:number){
+    async deleteFlow(@Param('id') id:string){
         return await this.flowsServices.deleteFlow(id)
     }
 }

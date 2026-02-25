@@ -29,3 +29,4 @@ export const schemaAuth=object({
     email:email(),
     password:string()
 })
+

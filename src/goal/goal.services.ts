@@ -7,9 +7,6 @@ import { schemaGoal } from "src/schemas/schemas-zod";
 
 @Injectable()
 export class GoalServices{
-    constructor(
-        private readonly db=db
-    ){}
 
     async createGoal(goals:IGoal){
         const validate=await schemaGoal.safeParseAsync(goals)

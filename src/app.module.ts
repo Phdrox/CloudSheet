@@ -10,10 +10,13 @@ import { GoalController } from './goal/goal.controllers';
 import { CategoryController } from './categories/categories.controllers';
 import { AuthService } from './auth/auth.services';
 import { AuthController } from './auth/auth.controllers';
+import { auth } from './auth.config';
 
 @Module({
   imports: [ConfigModule.forRoot()],
   controllers: [UserController,FlowsController,GoalController,CategoryController,AuthController],
-  providers: [UsersService,FlowsServices,GoalServices,CategoriesServices,AuthService],
+  providers: [UsersService,FlowsServices,GoalServices,CategoriesServices,AuthService,
+  {provide:"AUTH",useValue:auth}],
+  exports:['AUTH']
 })
 export class AppModule {}
