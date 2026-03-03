@@ -21,7 +21,7 @@
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
     "drizzle:push": "drizzle-kit push",
-    "seed":"tsx src/database/seed-categories.ts"
+    "seed": "tsx src/database/seed-categories.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -29,6 +29,7 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/jwt": "^11.0.2",
     "@nestjs/platform-express": "^11.0.1",
+    "@thallesp/nestjs-better-auth": "^2.4.0",
     "argon2": "^0.44.0",
     "better-auth": "^1.4.18",
     "dotenv": "^17.3.1",

@@ -1,32 +1,28 @@
 
-import { object,string,number,date, email } from "zod";
+import { object,string,number,date, uuid,coerce} from "zod";
 
 export const schemaUser=object({
-    name:string().max(255),
-    username:string().min(100),
-    email:string().max(260),
-    password: string(),
+  name: string(),
+  email: string(),
+  password:string(),
+  currentPassword:string()
 })
 
 export const schemaFlows=object({
-    id_categorie:number(),
+    id_categories:number(),
     name:string().max(255),
     type:string().max(20),
     payment:string().max(40),
     price:number(),
-    date:date(),
+    date:coerce.date(),
 })
 
 export const schemaGoal=object({
-    id_user:string(),
-    id_categories:number(),
+    id_user:uuid(),
     name:string().max(150),
     value:number(),
     have:number()
 })
 
-export const schemaAuth=object({
-    email:email(),
-    password:string()
-})
+
 

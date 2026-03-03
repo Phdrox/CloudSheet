@@ -1,69 +1,35 @@
 import {Injectable} from "@nestjs/common"
 import { db } from "src/database/db"    
-import type { IUser } from "./interfaces/user-interface"
 import * as d from "drizzle-orm"
-import { users } from "src/database/schemas" 
+import { user } from "src/database/schemas" 
 import { UUID } from "crypto"
-import { hash } from "argon2"
-import { schemaUser } from "src/schemas/schemas-zod"
 
 @Injectable()
 export class UsersService{
 
-    async createUser(user: IUser){
-        const validate= await schemaUser.safeParseAsync(user)
-        if (validate.success){
-            await db.insert(users).values({...user,password:await hash(user.password)}).returning()
-            return {message:'User created successfully'}
-        }else{
-            return {message:'Usuário não cadastrado'}
-        }
-       }
-
     async getAllUsers(){
         try{
-            const data=await db.select().from(users)
+            const data=await db.select().from(user)
             if(data.length===0){
-                return {message:'No users found'}
+                return {message:'Nenhum usuário encontrado'}
             }
-            return {message:'Users found', data}
+            return {message:'Usurários encontrados', data}
         }
         catch(error){
-            return {message:'Error finding users', error}
+            return {message:'Error ao busca usuários', error}
         }
     }
 
     async getUserById(id:UUID){
         try{
-           const getUsers= await db.select().from(users).where(d.eq(users.id,id))
+           const getUsers= await db.select().from(user).where(d.eq(user.id,id))
            if(getUsers.length===0){  
-                return {message:'User not found'}
+                return {message:'Usuário não encontrado'}
           }
-           return {message:'User found', data:getUsers}
+           return {message:'Usuário encontrado', data:getUsers}
         }
         catch(error){
-            return {message:'Error finding user', error} 
-        }
-    }
-
-    async updateUser(id:UUID,user:IUser){
-        const validate= await schemaUser.safeParseAsync(user)
-        if(validate.success){
-            await db.update(users).set(user).where(d.eq(users.id,id)).returning()
-            return {message:'Usuário atualizado com sucesso'}
-        }
-        else{
-            return {message:"Usuário não atualizado"}
-        }
-    }
-
-    async deleteUser(id:UUID){
-        try{
-            await db.delete(users).where(d.eq(users.id,id)).returning()
-            return {message:'User deleted successfully'}
-        }
-        catch(error){
-            return {message:'Error deleting user', error} 
+            return {message:'Error ao busca usuário', error} 
         }
     }
 
