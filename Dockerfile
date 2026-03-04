@@ -1,6 +1,5 @@
 FROM node:20-slim
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+ENV .env .env
 RUN corepack enable
 COPY . /app
 WORKDIR /app
