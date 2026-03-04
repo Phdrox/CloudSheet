@@ -11,7 +11,7 @@ const schemaPagination=z.object({
 
 export type PaginationsType=z.infer<typeof schemaPagination>
 
-export async function usePagination(page:any,search:any,table:any,searchCollun:any){
+export async function usePagination(page:any=1,search:any="",table:any,searchCollun:any){
     const result=await schemaPagination.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}

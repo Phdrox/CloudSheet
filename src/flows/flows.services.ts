@@ -4,6 +4,7 @@ import type { IFlows } from "./interfaces/flows-type";
 import { eq } from "drizzle-orm";
 import {flows} from "src/database/schemas"
 import { schemaFlows } from "src/schemas/schemas-zod";
+import { usePagination } from "src/hook/pagination";
 
 @Injectable()
 export class FlowsServices{
@@ -19,13 +20,13 @@ export class FlowsServices{
         }    
    }
 
-   async getFlows(){
+   async getFlows(page,search){
     try{
-        const data=await db.select().from(flows)
+        const {data,meta}= await usePagination(page,search,flows,flows.name)
         if(data.length===0){
             return {message:'No flows found'}
         }
-        return {message:'Flows found', data}
+        return {message:'Flows found', data, meta}
     }
     catch(error){
         return {message:'Error getting flows', error}

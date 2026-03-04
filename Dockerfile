@@ -1,17 +1,9 @@
-FROM node:latest
-
-RUN npm install -g pnpm
-
-USER node
-
-WORKDIR /home/node/app
-
-COPY package.json pnpm-lock.yaml ./
-
-RUN pnpm install 
-
+FROM node:alphine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install pnpm && pnpm install
+ENV ./.env ./.env
 COPY . .
-
-CMD [ "pnpm", "start:dev" ]
-
-
+RUN pnpm build
+EXPOSE 3000
+CMD ["pnpm", "start:prod"]

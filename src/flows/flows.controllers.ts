@@ -13,8 +13,8 @@ export class FlowsController{
     }
 
     @Get('')
-    async getFlows(){
-        return await this.flowsServices.getFlows()
+    async getFlows(@Body() page: number,search:string){
+        return await this.flowsServices.getFlows(page,search)
     }
 
     @Get(':id')

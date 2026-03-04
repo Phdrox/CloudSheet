@@ -4,6 +4,7 @@ import { goal } from "src/database/schemas";
 import type { IGoal } from "./interfaces/goal-type";
 import { eq } from "drizzle-orm";
 import { schemaGoal } from "src/schemas/schemas-zod";
+import { usePagination } from "src/hook/pagination";
 
 @Injectable()
 export class GoalServices{
@@ -18,13 +19,13 @@ export class GoalServices{
        }
     }
 
-    async getGoals(){
+    async getGoals(page,search){
         try{
-            const data=await db.select().from(goal)
+            const {data,meta}=await usePagination(page,search,goal,goal.name)
             if (data.length==0){
                 return {message:"Not found goal"}
             }
-            return {message:"Goal founded",data}
+            return {message:"Goal founded",data,meta}
         }
         catch(error){
             return {message:"Error when get all goals"}

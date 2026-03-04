@@ -14,8 +14,8 @@ async createGoal(@Body() goals:IGoal){
 }
 
 @Get("")
-async getAllGoals(){
-    return await this.goalService.getGoals()
+async getAllGoals(@Body() page: number,search:string){
+    return await this.goalService.getGoals(page,search)
 }
 
 @Get(":id")
