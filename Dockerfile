@@ -1,9 +1,10 @@
-FROM node:alphine
+FROM node:20-slim
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
 WORKDIR /app
-COPY package*.json ./
-RUN npm install pnpm && pnpm install
-ENV ./.env ./.env
-COPY . .
-RUN pnpm build
+RUN pnpm install
+RUN pnpm run build
 EXPOSE 3000
 CMD ["pnpm", "start:prod"]
