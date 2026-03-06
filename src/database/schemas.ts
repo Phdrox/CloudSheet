@@ -1,6 +1,6 @@
 import {pgTable,varchar,timestamp,text,real,date,integer,uuid,boolean,index} from "drizzle-orm/pg-core"
 import { randomUUID } from "crypto"
-import {relations} from "drizzle-orm/_relations"
+import {relations} from "drizzle-orm/relations"
 
 export const user = pgTable("user", {
   id: uuid("id").defaultRandom().primaryKey(),
