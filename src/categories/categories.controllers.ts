@@ -1,5 +1,5 @@
 import {Controller, Get,Param, Delete} from '@nestjs/common';
-import { CategoriesServices } from './categories.services';
+import { CategoriesServices } from './categories.services.js';
 
 @Controller("category")
 export class CategoryController{

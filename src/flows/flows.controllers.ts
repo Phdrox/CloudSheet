@@ -1,6 +1,6 @@
 import {Controller, Get, Post, Body, Param, Delete, Put} from '@nestjs/common';
-import { FlowsServices } from './flows.services';
-import type { IFlows } from './interfaces/flows-type';
+import { FlowsServices } from './flows.services.js';
+import type { IFlows } from './interfaces/flows-type.js';
 
 
 @Controller('flows')

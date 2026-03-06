@@ -1,5 +1,5 @@
 import { Controller,All,Res,Req} from "@nestjs/common"
-import { auth } from "../auth";
+import { auth } from "../auth.js";
 import { Request,Response } from "@nestjs/common";
 
 @Controller('auth')

@@ -1,8 +1,8 @@
 import {betterAuth} from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
-import { db } from "./database/db"
+import { db } from "./database/db.js"
 import { hash, verify } from "argon2"
-import * as schema from "./database/schemas"
+import * as schema from "./database/schemas.js"
 
 export const auth=betterAuth({
     basePath:"/api/auth",

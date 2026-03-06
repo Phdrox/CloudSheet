@@ -1,6 +1,6 @@
 import { Controller,Get,Post,Put,Delete,Body,Param } from "@nestjs/common";
-import type { IGoal } from "./interfaces/goal-type";
-import { GoalServices } from "./goal.services";
+import type { IGoal } from "./interfaces/goal-type.js";
+import { GoalServices } from "./goal.services.js";
 
 @Controller("goals")
 export class GoalController{

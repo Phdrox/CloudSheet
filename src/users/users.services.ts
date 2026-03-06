@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common"
-import { db } from "../database/db"    
+import { db } from "../database/db.js"    
 import * as d from "drizzle-orm"
-import { user } from "../database/schemas" 
+import { user } from "../database/schemas.js" 
 import { UUID } from "crypto"
 
 @Injectable()

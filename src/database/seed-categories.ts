@@ -1,5 +1,5 @@
-import { db } from "./db";
-import { categories } from "./schemas";
+import { db } from "./db.js";
+import { categories } from "./schemas.js";
 
 async function seed(){
     const data=[

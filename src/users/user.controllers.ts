@@ -1,5 +1,5 @@
 import { Controller,Get, Param } from "@nestjs/common";
-import { UsersService } from "./users.services";
+import { UsersService } from "./users.services.js";
 import type { UUID } from "crypto";
 
 

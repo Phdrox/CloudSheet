@@ -96,5 +96,6 @@
       "esbuild",
       "unrs-resolver"
     ]
-  }
+  },
+  "type": "module"
 }

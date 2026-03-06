@@ -1,6 +1,6 @@
 import { ilike, count} from "drizzle-orm";
 import z, { number, string,coerce } from "zod";
-import { db } from "../database/db";
+import { db } from "../database/db.js";
 
 const schemaPagination=z.object({
   offset:coerce.number(),
