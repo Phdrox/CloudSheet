@@ -1,5 +1,4 @@
-import {Controller, Get, Post, Body, Param, Delete, Put} from '@nestjs/common';
-import type { ICategory} from './interfaces/category-type';
+import {Controller, Get,Param, Delete} from '@nestjs/common';
 import { CategoriesServices } from './categories.services';
 
 @Controller("category")

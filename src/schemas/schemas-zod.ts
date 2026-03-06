@@ -1,5 +1,5 @@
 
-import { object,string,number,date, uuid,coerce} from "zod";
+import { object,string,number,uuid,coerce} from "zod";
 
 export const schemaUser=object({
   name: string(),
