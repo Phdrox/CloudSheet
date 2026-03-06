@@ -1,19 +1,10 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "ES2021",
-
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-
-    "baseUrl": "./",
-    "paths": {
-      "src/*": ["src/*"]
-    },
-
-    "strict": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true
-  }
+    "module": "commonjs",
+    "target": "ES6",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    // ... outras opções padrão do NestJS
+  },
+  "include": ["src/**/*"]
 }

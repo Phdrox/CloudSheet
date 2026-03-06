@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+async function bootstrap(req, res) {
   const app = await NestFactory.create(AppModule,{
     bodyParser:false
   });
@@ -11,7 +11,8 @@ async function bootstrap() {
     methods:'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials:true
   })
-  await app.listen(process.env.PORT ?? 3000);
+  await app.init();
+  return app.getHttpAdapter().getInstance()(req, res);
 
 }
-bootstrap();
+
