@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { db } from "src/database/db";
+import { db } from "../database/db";
 import type { IFlows } from "./interfaces/flows-type";
 import { eq } from "drizzle-orm";
-import {flows} from "src/database/schemas"
-import { schemaFlows } from "src/schemas/schemas-zod";
-import { usePagination } from "src/hook/pagination";
+import {flows} from "../database/schemas"
+import { schemaFlows } from "../schemas/schemas-zod";
+import { usePagination } from "../hook/pagination";
 
 @Injectable()
 export class FlowsServices{

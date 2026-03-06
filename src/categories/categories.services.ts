@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { db } from "src/database/db";
+import { db } from "../database/db";
 import type { ICategory } from "./interfaces/category-type";
 import { eq } from "drizzle-orm";
 import {categories} from "src/database/schemas"

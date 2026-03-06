@@ -1,10 +1,10 @@
 import {Injectable} from "@nestjs/common";
-import {db} from "src/database/db";
-import { goal } from "src/database/schemas";
+import {db} from "../database/db";
+import { goal } from "../database/schemas";
 import type { IGoal } from "./interfaces/goal-type";
 import { eq } from "drizzle-orm";
-import { schemaGoal } from "src/schemas/schemas-zod";
-import { usePagination } from "src/hook/pagination";
+import { schemaGoal } from "../schemas/schemas-zod";
+import { usePagination } from "../hook/pagination";
 
 @Injectable()
 export class GoalServices{
