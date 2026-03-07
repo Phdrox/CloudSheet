@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { db } from "../database/db.js";
 import type { ICategory } from "./interfaces/category-type.js";
 import { eq } from "drizzle-orm";
-import {categories} from "src/database/schemas.js"
+import {categories} from "../database/schemas.js"
 
 @Injectable()
 export class CategoriesServices{
