@@ -17,30 +17,58 @@ export const user = pgTable("user", {
 
 export const categories=pgTable('category',{
     id:integer('id').primaryKey().generatedAlwaysAsIdentity(),
-    type_categorie:varchar({length:50}).notNull().unique()
+    type_categorie:varchar("type_categorie",{length:50}).notNull().unique()
 })
 
-export const flows=pgTable('flows',{
-    id:uuid().defaultRandom().primaryKey().notNull(),
-    idCategorie:integer('id_categories').references(()=>categories.id),
-    name:varchar({length:255}).notNull(),
-    type:varchar({length:120}).notNull(),
-    payment:varchar({length:130}).notNull(),
-    price:real().notNull(),
-    date:date().notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updateAt: timestamp("updated_at").$onUpdate(()=>new Date()).notNull(),
+export const flows = pgTable("flows", {
+  id: uuid("id").defaultRandom().primaryKey(),
+
+  idCategorie: integer("id_categories")
+    .references(() => categories.id),
+
+  name: varchar("name", { length: 255 }).notNull(),
+  type: varchar("type", { length: 120 }).notNull(),
+  payment: varchar("payment", { length: 130 }).notNull(),
+
+  price: real("price").notNull(),
+  date: date("date").notNull(),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+
+  updateAt: timestamp("updated_at")
+    .$onUpdate(() => new Date())
+    .notNull(),
+  
+},(table)=>[
+    index("flows_category_idx").on(table.idCategorie)
+  ])
+
+export const goal = pgTable("goal", {
+  id: uuid("id").defaultRandom().primaryKey(),
+
+  idUser: uuid("id_user")
+    .references(() => user.id),
+
+  name: varchar("name", { length: 150 }).notNull(),
+
+  value: real("value"),
+  have: real("have"),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+
+  updateAt: timestamp("updated_at")
+    .$onUpdate(() => new Date())
+    .notNull(),
 })
 
-export const goal=pgTable('goal',{
-    id:uuid().defaultRandom().primaryKey().notNull(),
-    idUser:uuid('id_user').references(()=>user.id),
-    name:varchar({length:150}).notNull(),
-    value:real(),
-    have:real(),
-    createdAt: timestamp("created_at",).defaultNow().notNull(),
-    updateAt: timestamp("updated_at").$onUpdate(()=>new Date()).notNull(),
-})
+export const flowsRelations = relations(flows, ({ one }) => ({
+  category: one(categories, {
+    fields: [flows.idCategorie],
+    references: [categories.id],
+  }),
+}))
+
+
 
 export const session = pgTable(
   "session",

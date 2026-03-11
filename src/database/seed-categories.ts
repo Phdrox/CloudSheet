@@ -24,7 +24,10 @@ async function seed(){
        dataInsert.push({type_categorie:data[i]})
     }
 
-    return await db.insert(categories).values(dataInsert)
+    return await db
+        .insert(categories)
+        .values(dataInsert)
+        .onConflictDoNothing()
 }
 
 seed()
