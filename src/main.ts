@@ -9,7 +9,8 @@ async function bootstrap() {
   app.enableCors({
     origin: [process.env.URL_ORIGIN],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
   });
 
   // Opcional: Apenas executa listen se não estiver na Vercel
