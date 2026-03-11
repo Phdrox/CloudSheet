@@ -1,5 +1,5 @@
 {
-  "id": "75fe74ab-3a93-4aad-bd00-bf72792377c3",
+  "id": "3cf62372-6972-42cf-bf65-baeaac7aef9e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -231,7 +231,23 @@
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "flows_category_idx": {
+          "name": "flows_category_idx",
+          "columns": [
+            {
+              "expression": "id_categories",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "flows_id_categories_category_id_fk": {
           "name": "flows_id_categories_category_id_fk",
