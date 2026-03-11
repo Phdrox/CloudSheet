@@ -4,7 +4,7 @@ import { AllowAnonymous } from "@thallesp/nestjs-better-auth";
 
 
 @Controller('/')
-export class UserController{
+export class AppController{
 
     @Get("/")
     @AllowAnonymous()
