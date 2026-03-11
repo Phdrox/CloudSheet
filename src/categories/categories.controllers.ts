@@ -1,5 +1,6 @@
 import {Controller, Get,Param, Delete} from '@nestjs/common';
 import { CategoriesServices } from './categories.services.js';
+import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 
 @Controller("category")
 export class CategoryController{
@@ -8,11 +9,13 @@ export class CategoryController{
  ){}
  
  @Get("")
+ @AllowAnonymous()
  async getAllCategories(){
     return await this.CategoriesService.getCategories()
  }
-
+ 
  @Get(":id")
+ @AllowAnonymous()
  async getCategoriesById(@Param() id:number){
     return await this.CategoriesService.getCategoryById(id)
  }

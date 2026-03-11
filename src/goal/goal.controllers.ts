@@ -1,6 +1,7 @@
 import { Controller,Get,Post,Put,Delete,Body,Param } from "@nestjs/common";
 import type { IGoal } from "./interfaces/goal-type.js";
 import { GoalServices } from "./goal.services.js";
+import { AllowAnonymous } from "@thallesp/nestjs-better-auth";
 
 @Controller("goals")
 export class GoalController{
@@ -11,14 +12,16 @@ export class GoalController{
 @Post("")
 async createGoal(@Body() goals:IGoal){
     return await this.goalService.createGoal(goals)
-}
+} 
 
 @Get("")
+@AllowAnonymous()
 async getAllGoals(@Body() page: number,search:string){
     return await this.goalService.getGoals(page,search)
 }
 
 @Get(":id")
+@AllowAnonymous()
 async getGoalById(@Param("id") id:string){
     return await this.goalService.getGoalById(id)
 }
