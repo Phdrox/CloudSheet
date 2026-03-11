@@ -21,7 +21,8 @@
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
     "drizzle:push": "drizzle-kit push",
-    "seed": "tsx src/database/seed-categories.ts"
+    "seed": "tsx src/database/seed-categories.ts",
+    "deploy": "pnpm drizzle:push && pnpm seed && pnpm build"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
