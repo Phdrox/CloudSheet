@@ -1,6 +1,6 @@
 import {pgTable,varchar,timestamp,text,real,date,integer,uuid,boolean,index} from "drizzle-orm/pg-core"
 import { randomUUID } from "crypto"
-import {relations} from "drizzle-orm/relations"
+import {relations} from "drizzle-orm"
 
 export const user = pgTable("user", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -15,6 +15,11 @@ export const user = pgTable("user", {
     .notNull(),
 });
 
+export const categories=pgTable('category',{
+    id:integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    type_categorie:varchar({length:50}).notNull().unique()
+})
+
 export const flows=pgTable('flows',{
     id:uuid().defaultRandom().primaryKey().notNull(),
     idCategorie:integer('id_categories').references(()=>categories.id),
@@ -25,11 +30,6 @@ export const flows=pgTable('flows',{
     date:date().notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updateAt: timestamp("updated_at").$onUpdate(()=>new Date()).notNull(),
-})
-
-export const categories=pgTable('category',{
-    id:integer('id').primaryKey().generatedAlwaysAsIdentity(),
-    type_categorie:varchar({length:50}).notNull().unique()
 })
 
 export const goal=pgTable('goal',{
