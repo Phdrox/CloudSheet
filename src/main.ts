@@ -15,7 +15,7 @@ async function bootstrap() {
 
   // Opcional: Apenas executa listen se não estiver na Vercel
   if (process.env.NODE_ENV !== 'production') {
-    await app.listen(process.env.PORT ?? 3000);
+    await app.listen(process.env.PORT ?? 3001);
   }
 
   await app.init();
