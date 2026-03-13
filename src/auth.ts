@@ -27,12 +27,15 @@ export const auth=betterAuth({
             }
         }
     },
-    session:{
-        expiresIn:60*60*24*7,
-        cookieCache:{
-            enabled:true,
-            maxAge:60*5
-        }
-    }
+  session: {
+  expiresIn: 60 * 60 * 24 * 7,
+  cookieCache: {
+    enabled: true,
+    maxAge: 60 * 5
+  },
+  cookie: {
+    sameSite: "lax"
+  }
+}
 })
 
