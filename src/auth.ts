@@ -35,7 +35,8 @@ export const auth=betterAuth({
       },
       cookie: {
         sameSite: "none",
-        secure: true
+        secure: true,
+        domain: ".cloud-sheet.vercel.app"
       }
     }
 })
