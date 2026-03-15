@@ -3,6 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { db } from "./database/db.js"
 import { hash, verify } from "argon2"
 import * as schema from "./database/schemas.js"
+import {nextCookies} from "better-auth/next-js"
 
 export const auth=betterAuth({
     basePath:"/api/auth",
@@ -27,17 +28,6 @@ export const auth=betterAuth({
             }
         }
     },
-    session: {
-      expiresIn: 60 * 60 * 24 * 7,
-      cookieCache: {
-        enabled: true,
-        maxAge: 60 * 5
-      },
-      cookie: {
-        sameSite: "none",
-        secure: true,
-        domain: ".cloud-sheet.vercel.app"
-      }
-    }
+    plugins:[nextCookies()],
 })
 
