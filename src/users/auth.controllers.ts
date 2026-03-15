@@ -4,20 +4,19 @@ import { Request,Response } from "@nestjs/common";
 
 @Controller('api/auth')
 export class AuthController {
- 
- @All('*')
- async handler(@Req() req:Request, @Res() res: any){
-  const response= await auth.handler(req)
-  
 
-    const body = await response.text()
+  @All('*')
+  async handler(@Req() req: Request, @Res() res: any) {
 
-    res.status(response.status)
+    const response = await auth.handler(req)
 
+    // copiar headers (incluindo set-cookie)
     response.headers.forEach((value, key) => {
       res.setHeader(key, value)
     })
 
-    return res.send(body)
+    const body = await response.text()
+
+    return res.status(response.status).send(body)
   }
 }
