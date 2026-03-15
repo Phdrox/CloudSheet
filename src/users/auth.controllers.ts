@@ -2,18 +2,22 @@ import { Controller,All,Res,Req} from "@nestjs/common"
 import { auth } from "../auth.js";
 import { Request,Response } from "@nestjs/common";
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
  
- @All('/*')
+ @All('*')
  async handler(@Req() req:Request, @Res() res: any){
   const response= await auth.handler(req)
   
-  if (response instanceof Response){
-    const body=await response.json();
-    return res.status(response.status).send(body);
+
+    const body = await response.text()
+
+    res.status(response.status)
+
+    response.headers.forEach((value, key) => {
+      res.setHeader(key, value)
+    })
+
+    return res.send(body)
   }
-  
-  return res.status(500).send({message:"Internal Auth Error"})
- }
 }
