@@ -14,7 +14,9 @@ export const auth=betterAuth({
     advanced:{
         database:{
             generateId:false
-        }
+        },
+        cookiePrefix: "better-auth",
+        useSecureCookies: true,
     },
     emailAndPassword:{
         enabled:true,
@@ -31,7 +33,8 @@ export const auth=betterAuth({
     sessionToken:{
       attributes:{
         sameSite:"none",
-        secure:true
+        secure:true,
+        httpOnly: true,
       }
     }
    }
