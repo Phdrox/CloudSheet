@@ -10,7 +10,8 @@ async function bootstrap() {
     origin: ["https://cloud-sheet.vercel.app","http://localhost:3000"],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization', 'Origin','Accept', 'X-Requested-With', 'X-CSRF-Token', 'Set-Cookie', 'Cookie'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin','Accept', 'X-Requested-With'],
+    exposedHeaders: ['set-cookie'],
   });
 
   // Opcional: Apenas executa listen se não estiver na Vercel
