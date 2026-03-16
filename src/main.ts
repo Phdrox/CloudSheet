@@ -10,7 +10,7 @@ async function bootstrap() {
     origin: ["https://cloud-sheet.vercel.app","https://cloud-sheet-app.vercel.app"],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
-    allowedHeaders: ['*'],
+    allowedHeaders: '*',
     exposedHeaders: ['set-cookie'],
   });
 
