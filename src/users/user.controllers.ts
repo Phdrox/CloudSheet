@@ -2,6 +2,7 @@ import { Controller,Get, Param } from "@nestjs/common";
 import { UsersService } from "./users.services.js";
 import type { UUID } from "crypto";
 import { AllowAnonymous } from "@thallesp/nestjs-better-auth";
+import { Session,UserSession } from "@thallesp/nestjs-better-auth";
 
 
 @Controller('/users')
@@ -20,6 +21,10 @@ export class UserController{
     @AllowAnonymous()
     async getUser(@Param("id") id:UUID){
         return this.userService.getUserById(id)
+    }
+    @Get("me")
+    async getMe(@Session() session: UserSession){
+        return session;
     }
 
 }
