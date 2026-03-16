@@ -1,22 +1,24 @@
 import { Controller,All,Res,Req} from "@nestjs/common"
 import { auth } from "../auth.js";
-import { Request,Response } from "@nestjs/common";
+import {Response } from "express";
+import { Request } from "@nestjs/common";
 
 @Controller('api/auth')
 export class AuthController {
+@All('*')
+async handler(@Req() req: Request, @Res() res: Response) {
+  const response = await auth.handler(req);
 
-  @All('*')
-  async handler(@Req() req: Request, @Res() res: any) {
+  // Repassa os headers corretamente, especialmente múltiplos Set-Cookie
+  response.headers.forEach((value, key) => {
+    if (key.toLowerCase() === 'set-cookie') {
+      res.append(key, value); // Usa .append para não sobrescrever múltiplos cookies
+    } else {
+      res.setHeader(key, value);
+    }
+  });
 
-    const response = await auth.handler(req)
-
-    // copiar headers (incluindo set-cookie)
-    response.headers.forEach((value, key) => {
-      res.setHeader(key, value)
-    })
-
-    const body = await response.text()
-
-    return res.status(response.status).send(body)
-  }
+  const body = await response.json(); // Better Auth costuma retornar JSON
+  return res.status(response.status).send(body);
+}
 }
