@@ -32,8 +32,7 @@ export const auth=betterAuth({
    cookies:{
     sessionToken:{
       attributes:{
-        domain:"cloud-sheet.vercel.app",
-        sameSite:"lax",
+        sameSite:"none",
         secure:true,
         path:"/",
       }
