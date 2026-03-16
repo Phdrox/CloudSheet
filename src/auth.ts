@@ -6,7 +6,7 @@ import * as schema from "./database/schemas.js"
 
 export const auth=betterAuth({
     basePath:"/api/auth",
-    trustedOrigins:["https://cloud-sheet.vercel.app","http://localhost:3000"],
+    trustedOrigins:["https://cloud-sheet.vercel.app","https://cloud-sheet-app.vercel.app"],
     database:drizzleAdapter(db,{
         provider:'pg',
         schema
@@ -34,7 +34,6 @@ export const auth=betterAuth({
       attributes:{
         sameSite:"none",
         secure:true,
-        httpOnly: true,
       }
     }
    }
