@@ -36,6 +36,7 @@ export const auth=betterAuth({
         secure:true,
         path:"/",
       }
+      
     }
    }
 })
