@@ -34,6 +34,9 @@ export class UserController{
         const data= await auth.api.signInEmail({body:{email,password},asResponse:true})
         const cookie=data.headers.get('set-cookie')
         res.setHeader('Set-Cookie', cookie)
-        return data.json()
+        const response=data.json()
+        console.log(response)
+        console.log(cookie)
+        return response
      }
 }
