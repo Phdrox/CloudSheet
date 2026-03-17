@@ -33,15 +33,6 @@ export const auth=betterAuth({
         updateAge: 60 * 60 * 24 *1 // 7 dias
     }
     ,
-   cookies:{
-    sessionToken:{
-      attributes:{
-        sameSite:"none",
-        secure:true,
-        httpOnly:true,
-      }    
-    }
-   },
-   plugins:[nextCookies()]
+    
 })
 
