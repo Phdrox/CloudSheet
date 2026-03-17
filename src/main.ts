@@ -8,7 +8,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: ["https://cloud-sheet.vercel.app","https://cloud-sheet-app.vercel.app",""],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     allowedHeaders: [
       'Content-Type', 
@@ -16,7 +16,7 @@ async function bootstrap() {
       'Accept', 
       'Origin', 
       'X-Requested-With',
-      'Access-Control-Allow-Origin'
+      'Access-Control-Allow-Origin',
     ],
     exposedHeaders: ['set-cookie'],
   });
