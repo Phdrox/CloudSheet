@@ -16,8 +16,6 @@ export const auth=betterAuth({
         database:{
             generateId:false
         },
-        cookiePrefix: "better-auth",
-        useSecureCookies: true,
     },
     emailAndPassword:{
         enabled:true,
