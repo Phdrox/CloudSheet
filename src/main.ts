@@ -16,8 +16,7 @@ async function bootstrap() {
       'Accept', 
       'Origin', 
       'X-Requested-With',
-      'apollo-require-preflight', // Útil se usar GraphQL futuramente
-      'access-control-allow-origin'
+      'Access-Control-Allow-Origin'
     ],
     exposedHeaders: ['set-cookie'],
   });
