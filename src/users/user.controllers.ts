@@ -3,7 +3,7 @@ import { Response } from "express";
 import { UsersService } from "./users.services.js";
 import type { UUID } from "crypto";
 import { AllowAnonymous } from "@thallesp/nestjs-better-auth";
-import { auth } from "src/auth.js";
+import { auth } from "../auth.js";
 
 
 
