@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import {ConfigModule} from "@nestjs/config";
 import { UsersService } from './users/users.services.js';
-import { AuthController } from './users/auth.controllers.js';
 import { FlowsServices } from './flows/flows.services.js';
 import { FlowsController } from './flows/flows.controllers.js';
 import { GoalServices } from './goal/goal.services.js';
@@ -15,7 +14,7 @@ import { UserController } from './users/user.controllers.js';
 
 @Module({
   imports: [ConfigModule.forRoot(),AuthModule.forRoot({auth})],
-  controllers: [AppController,AuthController,FlowsController,GoalController,CategoryController,UserController],
+  controllers: [AppController,FlowsController,GoalController,CategoryController,UserController],
   providers: [UsersService,FlowsServices,GoalServices,CategoriesServices]
 })
 export class AppModule {}
