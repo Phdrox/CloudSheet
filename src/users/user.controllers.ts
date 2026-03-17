@@ -26,6 +26,7 @@ export class UserController{
     }
 
     @Post('/create/login')
+    @AllowAnonymous()
      async createUser(  
         @Body('email') email:string,
         @Body('password') password:string,
