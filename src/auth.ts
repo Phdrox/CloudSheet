@@ -28,13 +28,17 @@ export const auth=betterAuth({
             }
         }
     },
+    session:{
+        expiresIn: 60 * 60 * 24 * 7, // 7 dias
+    }
+    ,
    cookies:{
     sessionToken:{
       attributes:{
         sameSite:"none",
         secure:true,
-      }
-      
+        httpOnly:true,
+      }    
     }
    },
    plugins:[nextCookies()]
