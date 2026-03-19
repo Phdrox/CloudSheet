@@ -1,5 +1,5 @@
 import {Controller, Get,Param, Delete} from '@nestjs/common';
-import { CategoriesServices } from './categories.services.js';
+import { CategoriesServices } from './categories.service.js';
 import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 
 @Controller("category")

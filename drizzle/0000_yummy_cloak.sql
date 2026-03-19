@@ -1,0 +1,59 @@
+CREATE TABLE IF NOT EXISTS "account" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user" varchar(150) NOT NULL,
+	"email" varchar NOT NULL,
+	"password" varchar NOT NULL,
+	"type" varchar(10) NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "account_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "category" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "category_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"type_categorie" varchar(50) NOT NULL,
+	CONSTRAINT "category_type_categorie_unique" UNIQUE("type_categorie")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "flows" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id_categories" integer,
+	"id_account" uuid NOT NULL,
+	"name" varchar(255) NOT NULL,
+	"type" varchar(120) NOT NULL,
+	"payment" varchar(130) NOT NULL,
+	"price" real NOT NULL,
+	"date" date NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "goal" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id_account" uuid,
+	"name" varchar(150) NOT NULL,
+	"value" real,
+	"have" real,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp NOT NULL
+);
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "flows" ADD CONSTRAINT "flows_id_categories_category_id_fk" FOREIGN KEY ("id_categories") REFERENCES "public"."category"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "flows" ADD CONSTRAINT "flows_id_account_account_id_fk" FOREIGN KEY ("id_account") REFERENCES "public"."account"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "goal" ADD CONSTRAINT "goal_id_account_account_id_fk" FOREIGN KEY ("id_account") REFERENCES "public"."account"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "flows_category_idx" ON "flows" USING btree ("id_categories");

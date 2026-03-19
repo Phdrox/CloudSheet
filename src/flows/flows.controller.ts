@@ -1,5 +1,5 @@
 import {Controller, Get, Post, Body, Param, Delete, Put} from '@nestjs/common';
-import { FlowsServices } from './flows.services.js';
+import { FlowsServices } from './flows.service.js';
 import type { IFlows } from './interfaces/flows-type.js';
 import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 
