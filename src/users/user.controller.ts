@@ -8,7 +8,6 @@ export class UserController{
 
     constructor( private readonly userService:UsersService){}
     
-    
     @Get("")
     async getAll(){
         return await this.userService.getAllUsers()

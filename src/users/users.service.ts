@@ -3,7 +3,7 @@ import { db } from "../database/db.js"
 import * as d from "drizzle-orm"
 import { account } from "../database/schemas.js" 
 import { UUID } from "crypto"
-import {hash,verify} from "argon2"
+import {hash} from "argon2"
 
 export type User={
     email:string;
