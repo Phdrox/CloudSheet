@@ -22,9 +22,14 @@ export class AuthService {
    async signIn({email,password}:IUser):Promise<any>{
 
     const {data}= await this.userServices.userAuth(email);
+    
+    if (!data || data.length === 0) {
+     throw new UnauthorizedException();
+    }
+
     const payload={id:data[0].id,name:data[0].name,email:data[0].email};
     
-    if(!verify(password,data[0].password)){
+    if(!(await verify(data[0].password,password))){
         throw new UnauthorizedException();
     }
 
