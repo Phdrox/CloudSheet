@@ -24,7 +24,6 @@ export class AuthController{
       return this.authService.signUp(signUp)
     }
     
-    
     @UseGuards(AuthGuard)
     @Get('/profile')
     getProfile(@Request() req){

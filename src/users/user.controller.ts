@@ -17,11 +17,13 @@ export class UserController{
     async getUser(@Param("id") id:UUID){
         return await this.userService.getUserById(id)
     }
+
     @UseGuards(AuthGuard)
     @Put(":id")
     async putUser(@Body() id:UUID, data:User,type:string){
         return await this.userService.putUserById(id,data,type)
     }
+    
     @UseGuards(AuthGuard)
     @Delete(':id')
     async deleteUser(@Body() id:UUID){
