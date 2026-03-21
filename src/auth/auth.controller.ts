@@ -9,23 +9,23 @@ type Login={
 }
 
 
-@Controller('/auth')
+@Controller('auth')
 export class AuthController{
     constructor( private authService:AuthService){}
 
     @HttpCode(HttpStatus.OK)
-    @Post('/login')
+    @Post('login')
     sign(@Body() signInDto: Record<string, any>){
         return this.authService.signIn({email:signInDto.email,password:signInDto.password})
     }
 
-    @Post('/register')
+    @Post('register')
     register(@Body() signUp:User){
       return this.authService.signUp(signUp)
     }
     
     @UseGuards(AuthGuard)
-    @Get('/profile')
+    @Get('profile')
     getProfile(@Request() req){
         return req.user;
     }
