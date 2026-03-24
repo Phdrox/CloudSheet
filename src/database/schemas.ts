@@ -2,7 +2,7 @@ import {pgTable,varchar,timestamp,real,date,integer,uuid,index} from "drizzle-or
 
 export const account= pgTable("account",{
  id:uuid('id').defaultRandom().primaryKey(),
- name:varchar("user",{length:150}).notNull(),
+ name:varchar("name",{length:150}).notNull(),
  email:varchar("email").notNull().unique(),
  password:varchar("password").notNull(),
  type:varchar({length:10}).notNull().$defaultFn(()=>'normal'),
@@ -26,9 +26,7 @@ export const flows = pgTable("flows", {
   date: date("date").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updateAt: timestamp("updated_at").$onUpdate(() => new Date()).notNull(),
-},(table)=>[
-    index("flows_category_idx").on(table.idCategorie)
-  ])
+})
 
 export const goal = pgTable("goal", {
   id: uuid("id").defaultRandom().primaryKey(),
