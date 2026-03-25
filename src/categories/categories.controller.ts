@@ -9,7 +9,6 @@ export class CategoryController{
  ){}
  
  @Get("")
-
  async getAllCategories(){
     return await this.CategoriesService.getCategories()
  }
