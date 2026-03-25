@@ -1,10 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module.js';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: true
   });
+
+  app.use(cookieParser())
 
   app.enableCors({
     origin: ["https://cloud-sheet.vercel.app","https://cloud-sheet-app.vercel.app"],

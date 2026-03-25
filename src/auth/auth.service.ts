@@ -1,7 +1,7 @@
 import { Injectable,UnauthorizedException} from '@nestjs/common';
 import { UsersService } from '../users/users.service.js';
 import { JwtService } from '@nestjs/jwt';
-import {verify} from "argon2"
+import {verify,hash} from "argon2"
 
 type IUser={
     email:string;
@@ -32,8 +32,12 @@ export class AuthService {
     if(!(await verify(data[0].password,password))){
         throw new UnauthorizedException();
     }
-
-    return {access_token: await this.jwtService.signAsync(payload)};
+    
+    const access_token= await this.jwtService.signAsync(payload,{expiresIn:"15m"})
+    const refresh_token= await this.jwtService.signAsync(payload,{expiresIn:"7d"})
+    await this.userServices.updateRefreshToken(data[0].id,await hash(refresh_token))
+    
+    return {access_token,refresh_token};
    }
 
    async signUp({email,password,name}:IRegister){
@@ -45,5 +49,13 @@ export class AuthService {
     return {message}
    }
 
+   async clearSession(refresh_token:string){
+    const payload = await this.jwtService.decode(refresh_token)
+    if (payload){
+        await this.userServices.updateRefreshToken(payload.id,null);
+    }
+   }
+
+   
 
 }

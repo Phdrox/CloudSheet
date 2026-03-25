@@ -1,1 +1,0 @@
-export const jwtConstantKey={secret:'2OTP!;hR=8>Pv3@p$rI|#!k60i$oiF4Czf_1:Z%gBnf_e4D.qL.Tb#]TYTPxj:@,'}

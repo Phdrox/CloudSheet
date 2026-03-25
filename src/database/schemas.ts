@@ -3,9 +3,10 @@ import {pgTable,varchar,timestamp,real,date,integer,uuid,index} from "drizzle-or
 export const account= pgTable("account",{
  id:uuid('id').defaultRandom().primaryKey(),
  name:varchar("name",{length:150}).notNull(),
- email:varchar("email").notNull().unique(),
+ email:varchar("email").notNull().unique(), 
  password:varchar("password").notNull(),
  type:varchar({length:10}).notNull().$defaultFn(()=>'normal'),
+ token:varchar("token",{length:255}),
  createdAt: timestamp("created_at").defaultNow().notNull(),
  updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()).notNull(),
 })
