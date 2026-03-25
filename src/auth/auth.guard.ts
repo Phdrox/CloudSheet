@@ -32,9 +32,14 @@ export class AuthGuard implements CanActivate{
 
    private extractTokenFromHeader(request:Request): string | undefined{
      const cookieToken=request.cookies?.['access_token'];
-     if(cookieToken) return cookieToken
+     if(cookieToken) return cookieToken;
+
+     const authorization=request.headers?.authorization;
+
+     if(authorization) return undefined;
+
+     const [type,token]=authorization.split(' ');
      
-     const [token,type]= request.headers.authorization.split(' ') ?? [];
      return type === 'Bearer' ? token : undefined;
    }
 }
