@@ -1,6 +1,6 @@
-import {Controller, Get,Param, Delete} from '@nestjs/common';
+import {Controller, Get,Param, Delete, UseGuards, Req} from '@nestjs/common';
 import { CategoriesServices } from './categories.service.js';
-import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
+import { AuthGuard } from '../auth/auth.guard.js';
 
 @Controller("category")
 export class CategoryController{
@@ -9,14 +9,19 @@ export class CategoryController{
  ){}
  
  @Get("")
- @AllowAnonymous()
+
  async getAllCategories(){
     return await this.CategoriesService.getCategories()
  }
  
- @Get(":id")
- @AllowAnonymous()
- async getCategoriesById(@Param() id:number){
+@Get('mycategories')
+@UseGuards(AuthGuard)
+ async getCategoriesById(@Req() req:any){
+    return await this.CategoriesService.getCategoryById(req.user.id)
+ }
+
+ @Get(':id')
+ async getCategoriesId(@Param('id') id:number){
     return await this.CategoriesService.getCategoryById(id)
  }
 

@@ -1,6 +1,7 @@
-import {Controller, Get, Post, Body, Param, Delete, Put} from '@nestjs/common';
+import {Controller, Get, Post, Body, Param, Delete, Put,Req, UseGuards} from '@nestjs/common';
 import { FlowsServices } from './flows.service.js';
 import type { IFlows } from './interfaces/flows-type.js';
+import { AuthGuard } from '../auth/auth.guard.js';
 
 
 @Controller('flows')
@@ -17,8 +18,14 @@ export class FlowsController{
         return await this.flowsServices.getFlows(page,search)
     }
 
+    @Get('myflows')
+    @UseGuards(AuthGuard)
+    async getFlowById(@Req() req:any){
+        return await this.flowsServices.getFlowById(req.user.id)
+    }
+    
     @Get(':id')
-    async getFlowById(@Param('id') id:string){
+    async getFlowId(@Param('id') id:string){
         return await this.flowsServices.getFlowById(id)
     }
 
