@@ -54,6 +54,23 @@ export class AuthController{
 
         return {message:'Logged out'};
     }
+    
+    @Post('refresh')
+    async refresh(@Req() req ,@Res({passthrough:true}) res: Response){
+        const refreshToken=req.cookies['refresh_token'];
+    
+        if (!refreshToken) throw new UnauthorizedException('Refresh token não encontrado');
+
+        const {refresh_token,access_token}=await this.authService.refreshTokens(req.user.email,refreshToken)
+        
+        res.cookie('refresh_token', refresh_token, {
+        httpOnly: true,
+        secure: true, // true em produção
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+        return {access_token}
+    }
 }
 
 
