@@ -88,7 +88,7 @@ export class UsersService {
 
         async updateRefreshToken(id,refresh_token){
                 try{
-                 await db.update(account).set(refresh_token).where(d.eq(account.id,id))
+                 await db.update(account).set({token:refresh_token}).where(d.eq(account.id,id))
                 }catch{
                     return {message:"Token inválido"}
                 }
