@@ -1,4 +1,5 @@
 import {pgTable,varchar,timestamp,real,date,integer,uuid,index} from "drizzle-orm/pg-core"
+import { string } from "zod"
 
 export const account= pgTable("account",{
  id:uuid('id').defaultRandom().primaryKey(),
@@ -18,7 +19,7 @@ export const categories=pgTable('category',{
 
 export const flows = pgTable("flows", {
   id: uuid("id").defaultRandom().primaryKey(),
-  idCategorie: integer("id_categories").references(() => categories.id),
+  idCategorie: varchar("id_categories").references(() => categories.type_categorie),
   idAccount:uuid('id_account').notNull().references(()=> account.id),
   name: varchar("name", { length: 255 }).notNull(),
   type: varchar("type", { length: 120 }).notNull(),
