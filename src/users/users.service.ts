@@ -54,6 +54,7 @@ export class UsersService {
         }
         
         async createUser(body:User){
+            
             try{
                 await db.insert(account).values({...body,password:await hash(body.password)})
                 return {message:"Usuário criado com successo"}

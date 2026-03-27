@@ -19,8 +19,8 @@ export const categories=pgTable('category',{
 
 export const flows = pgTable("flows", {
   id: uuid("id").defaultRandom().primaryKey(),
-  idCategorie: varchar("id_categories").references(() => categories.type_categorie),
-  idAccount:uuid('id_account').notNull().references(()=> account.id),
+  id_categories: varchar("id_categories").references(() => categories.type_categorie),
+  id_account:uuid('id_account').notNull().references(()=> account.id),
   name: varchar("name", { length: 255 }).notNull(),
   type: varchar("type", { length: 120 }).notNull(),
   payment: varchar("payment", { length: 130 }).notNull(),

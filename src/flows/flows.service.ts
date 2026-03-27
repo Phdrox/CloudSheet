@@ -10,9 +10,15 @@ import { usePagination } from "../hook/pagination.js";
 export class FlowsServices{
 
    async createFlow(flow:IFlows){
+        const dataToSave = {
+            ...flow,
+            price: String(flow.price),
+            date: flow.date instanceof Date ? flow.date.toISOString() : flow.date
+        };
+        
         const validate= await schemaFlows.safeParseAsync(flow)
         if(validate.success){
-            await db.insert(flows).values(flow).returning()
+            await db.insert(flows).values(dataToSave).returning()
             return {message:'Flow created successfully'}
         }
         else{

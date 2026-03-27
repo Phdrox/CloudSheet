@@ -8,11 +8,9 @@ import { CategoriesServices } from './categories/categories.service.js';
 import { GoalController } from './goal/goal.controller.js';
 import { CategoryController } from './categories/categories.controller.js';
 import { AppController } from './app.controller.js';
-import { UserController } from './users/user.controller.js';
 import { AuthModule } from './auth/auth.module.js';
 import { UsersModule } from './users/users.module.js';
-import { AuthController } from './auth/auth.controller.js';
-import { AuthService } from './auth/auth.service.js';
+
 
 @Module({
   imports: [ConfigModule.forRoot({isGlobal:true}), AuthModule, UsersModule,],
