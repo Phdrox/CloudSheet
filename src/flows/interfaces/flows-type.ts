@@ -1,6 +1,6 @@
 export interface IFlows{
     id_categories:number,
-    idAccount:string,
+    id_account:string,
     name:string,
     type:string,
     payment:string,

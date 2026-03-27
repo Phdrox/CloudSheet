@@ -89,5 +89,6 @@ export class AuthController{
     catch{
         throw new UnauthorizedException('Sessão inválida')
     }
-}}
+}
+}
 
