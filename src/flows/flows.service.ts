@@ -13,9 +13,7 @@ export class FlowsServices{
         const dataToSave = {
             ...flow,
             price: String(flow.price),
-            date: flow.date instanceof Date 
-                ? flow.date.toISOString().split('T')[0] 
-                : new Date(flow.date).toISOString().split('T')[0]
+            date: new Date(flow.date).toISOString().split('T')[0]
         };
         
         const validate= await schemaFlows.safeParseAsync(flow)
