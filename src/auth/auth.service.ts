@@ -41,14 +41,27 @@ export class AuthService {
    }
 
 
-   async refreshTokens(refreshToken:string){
+   async refreshTokens(refreshToken:string,res:any){
     const payload= this.jwtService.verify(refreshToken);
 
     if(payload.type !== 'refresh'){
         throw new UnauthorizedException("Token inválido");
     }
-    
-    return await this.userServices.updateRefreshToken(payload.email,refreshToken)
+    const {new_access_token,new_refresh_token}=await this.userServices.updateRefreshToken(payload.email,refreshToken)
+    res.cookie('access_token',new_access_token,{
+        httpOnly:true,
+        secure:true,
+        sameSite:'strict',
+        maxAge:15*60*1000
+    })
+
+    res.cookie("refresh_token",new_refresh_token,{
+        httpOnly:true,
+        secure:true,
+        sameSite:'strict',
+        maxAge:7*24*60* 60* 1000
+    });
+    return {message:"new session"}
    }
 
    async signUp({email,password,name}:IRegister){
