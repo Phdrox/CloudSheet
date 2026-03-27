@@ -15,9 +15,9 @@ export type User={
 export class UsersService {
 
         async getAllUsers(){
-            const collumAccoun={id:account.id,name:account.name,email:account.email,created:account.createdAt}
+            const collumAccount={id:account.id,name:account.name,email:account.email,created:account.createdAt}
             try{
-                const data=await db.select(collumAccoun).from(account)
+                const data=await db.select(collumAccount).from(account)
                 if(data.length===0){
                     return {message:'Nenhum usuário encontrado'}
                 }
