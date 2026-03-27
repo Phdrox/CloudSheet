@@ -9,12 +9,12 @@ export const schemaUser=object({
 })
 
 export const schemaFlows=object({
-    id_categories:number(),
+    id_categories:string(),
     id_account:uuid(),
     name:string().max(255),
     type:string().max(20),
     payment:string().max(40),
-    price:number(),
+    price:coerce.number(),
     date:coerce.date(),
 })
 

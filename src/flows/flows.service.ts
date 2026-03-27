@@ -22,6 +22,7 @@ export class FlowsServices{
             return {message:'Flow created successfully'}
         }
         else{
+            console.log(validate.error.flatten())
             return {message:'Error creating flow'}
         }    
    }
