@@ -51,6 +51,19 @@ export class FlowsServices{
     catch(error){
         return {message:'Error getting flow', error}
     }}
+   
+    async getFlowByIdMy(id:string){
+    try{
+        console.log(id)
+        const data=await db.select().from(flows).where(eq(flows.id_account,id))
+        if(data.length===0){
+            return {message:'Flow not found'}
+        }
+        return {message:'Flow found', data}
+    }
+    catch(error){
+        return {message:'Error getting flow', error}
+    }}
 
     async updateFlow(id:string, flow:IFlows){
         const validate= await schemaFlows.safeParseAsync(flow)

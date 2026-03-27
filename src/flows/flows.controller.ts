@@ -21,7 +21,8 @@ export class FlowsController{
     @Get('myflows')
     @UseGuards(AuthGuard)
     async getFlowById(@Req() req:any){
-        return await this.flowsServices.getFlowById(req.user.id)
+        console.log(req.user.id)
+        return await this.flowsServices.getFlowByIdMy(req.user.id)
     }
     
     @Get(':id')

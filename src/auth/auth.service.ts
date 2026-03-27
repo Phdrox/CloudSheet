@@ -48,7 +48,8 @@ export class AuthService {
     const isRefreshTokenValid =await verify(data[0].token,refreshToken);
 
     if(!isRefreshTokenValid){
-        throw new UnauthorizedException("Sessão expirada");
+        
+       console.log('não há token')
     }
 
     const payload={ id: data[0].id, name: data[0].name, email: data[0].email };
