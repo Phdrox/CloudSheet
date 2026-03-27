@@ -24,7 +24,7 @@ export const flows = pgTable("flows", {
   name: varchar("name", { length: 255 }).notNull(),
   type: varchar("type", { length: 120 }).notNull(),
   payment: varchar("payment", { length: 130 }).notNull(),
-  price: real("price").notNull(),
+  price: varchar("price").notNull(),
   date: date("date").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updateAt: timestamp("updated_at").$onUpdate(() => new Date()).notNull(),
@@ -34,8 +34,8 @@ export const goal = pgTable("goal", {
   id: uuid("id").defaultRandom().primaryKey(),
   idAccount: uuid("id_account").references(() => account.id),
   name: varchar("name", { length: 150 }).notNull(),
-  value: real("value"),
-  have: real("have"),
+  value: varchar("value"),
+  have: varchar("have"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updateAt: timestamp("updated_at")
     .$onUpdate(() => new Date())
