@@ -71,6 +71,13 @@ export class AuthController{
 
         const {refresh_token,access_token}=await this.authService.refreshTokens(payload.email,refreshToken)
         
+        res.cookie('access_token', access_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 15 * 60 * 1000 // 15 minutos
+        });
+        
         res.cookie('refresh_token', refresh_token, {
         httpOnly: true,
         secure: true, 
