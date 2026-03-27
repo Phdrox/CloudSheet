@@ -3,13 +3,11 @@ import { AuthService } from "./auth.service.js";
 import { AuthGuard } from "./auth.guard.js";
 import {User} from "../users/users.service.js"
 import { Request, Response } from "express";
-import { JwtService } from "@nestjs/jwt";
 
 @Controller('auth')
 export class AuthController{
     constructor( 
         private authService:AuthService,
-        private jwtService:JwtService
     ){}
 
     @HttpCode(HttpStatus.OK)
@@ -60,35 +58,9 @@ export class AuthController{
     }
     
     @Post('refresh')
-    async refresh(@Req() req ,@Res({passthrough:true}) res: Response){
-        const refreshToken=req.cookies['refresh_token'];
-    
-        if (!refreshToken) throw new UnauthorizedException('Refresh token não encontrado');
-        try{
-        const payload = await this.jwtService.verifyAsync(refreshToken, {
-            secret: process.env.JWT_SECRET!
-        });
-        
-        const {refresh_token,access_token}=await this.authService.refreshTokens(payload.email,refreshToken)
-        
-        res.cookie('access_token', access_token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 15 * 60 * 1000 // 15 minutos
-        });
-        
-        res.cookie('refresh_token', refresh_token, {
-        httpOnly: true,
-        secure: true, 
-        sameSite: 'strict',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-        return {access_token}
-    }
-    catch{
-        throw new UnauthorizedException('Sessão inválida')
-    }
+    async refresh(@Body() body:any){
+        const {refreshToken}=body
+        return this.authService.refreshTokens(refreshToken)
 }
 }
 

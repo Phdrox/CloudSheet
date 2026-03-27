@@ -1,9 +1,10 @@
-import {Injectable} from "@nestjs/common"
+import {Injectable, UnauthorizedException} from "@nestjs/common"
 import { db } from "../database/db.js"    
 import * as d from "drizzle-orm"
 import { account } from "../database/schemas.js" 
 import { UUID } from "crypto"
 import {hash} from "argon2"
+import { JwtService } from "@nestjs/jwt"
 
 export type User={
     email:string;
@@ -14,6 +15,9 @@ export type User={
 @Injectable()
 export class UsersService {
 
+       constructor(
+        private jwtService:JwtService
+       ){}
         async getAllUsers(){
             const collumAccount={id:account.id,name:account.name,email:account.email,created:account.createdAt}
             try{
@@ -89,7 +93,19 @@ export class UsersService {
 
         async updateRefreshToken(id,refresh_token){
                 try{
-                 await db.update(account).set({token:refresh_token}).where(d.eq(account.id,id))
+                 const user=await db.select().from(account).where(d.and(d.eq(account.id,id),d.eq(account.token,refresh_token)))
+                 
+                 if(!user){
+                    throw new UnauthorizedException("Token inválido");
+                 }
+                 
+                 const newPayload={id:user[0].id,name:user[0].name,email:user[0].email};
+                 const new_access_token= await this.jwtService.signAsync({...newPayload,type:'access'},{expiresIn:"15m"})
+                 const new_refresh_token= await this.jwtService.signAsync({...newPayload,type:'refresh'},{expiresIn:"7d"})
+
+                 await db.update(account).set({token:new_refresh_token}).where(d.and(d.eq(account.id,id),d.eq(account.token,refresh_token)))
+                 
+                 return {new_access_token,new_refresh_token};
                 }catch{
                     return {message:"Token inválido"}
                 }

@@ -26,41 +26,29 @@ export class AuthService {
     if (!data || data.length === 0) {
      throw new UnauthorizedException();
     }
-
-    const payload={id:data[0].id,name:data[0].name,email:data[0].email};
     
     if(!(await verify(data[0].password,password))){
         throw new UnauthorizedException();
     }
+
+    const payload={id:data[0].id,name:data[0].name,email:data[0].email};
     
-    const access_token= await this.jwtService.signAsync(payload,{expiresIn:"15m"})
-    const refresh_token= await this.jwtService.signAsync(payload,{expiresIn:"7d"})
+    const access_token= await this.jwtService.signAsync({...payload,type:'access'},{expiresIn:"15m"})
+    const refresh_token= await this.jwtService.signAsync({...payload,type:'refresh'},{expiresIn:"7d"})
     await this.userServices.updateRefreshToken(data[0].id,await hash(refresh_token))
     
     return {access_token,refresh_token};
    }
 
 
-   async refreshTokens(email:string,refreshToken:string){
-    const {data}= await this.userServices.userAuth(email)
-    if (!data || data.length ===0) throw new UnauthorizedException();
+   async refreshTokens(refreshToken:string){
+    const payload= this.jwtService.verify(refreshToken);
 
-    const isRefreshTokenValid =await verify(data[0].token,refreshToken);
-
-    if(!isRefreshTokenValid){
-        
-       console.log('não há token')
+    if(payload.type !== 'refresh'){
+        throw new UnauthorizedException("Token inválido");
     }
-
-    const payload={ id: data[0].id, name: data[0].name, email: data[0].email };
-    const access_token = await this.jwtService.signAsync(payload, { expiresIn: "15m" });
-    const new_refresh_token = await this.jwtService.signAsync(payload, { expiresIn: "7d" });
-    await this.userServices.updateRefreshToken(data[0].id, await hash(new_refresh_token));
     
-    return {
-        access_token,
-        refresh_token: new_refresh_token,
-     };
+    return await this.userServices.updateRefreshToken(payload.email,refreshToken)
    }
 
    async signUp({email,password,name}:IRegister){
