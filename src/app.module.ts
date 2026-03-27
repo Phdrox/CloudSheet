@@ -15,8 +15,8 @@ import { AuthController } from './auth/auth.controller.js';
 import { AuthService } from './auth/auth.service.js';
 
 @Module({
-  imports: [ConfigModule.forRoot(), AuthModule, UsersModule,],
-  controllers: [AppController,FlowsController,GoalController,CategoryController,UserController,AuthController],
-  providers: [UsersService,FlowsServices,GoalServices,CategoriesServices,AuthService]
+  imports: [ConfigModule.forRoot({isGlobal:true}), AuthModule, UsersModule,],
+  controllers: [AppController,FlowsController,GoalController,CategoryController,],
+  providers: [FlowsServices,GoalServices,CategoriesServices]
 })
 export class AppModule {}
