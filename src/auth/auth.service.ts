@@ -36,7 +36,7 @@ export class AuthService {
     
     const access_token= await this.jwtService.signAsync({...payload,type:'access'},{expiresIn:"15m"})
     const refresh_token= await this.jwtService.signAsync({...payload,type:'refresh'},{expiresIn:"7d"})
-    await this.userServices.updateRefreshToken(data[0].id,await hash(refresh_token))
+    await this.userServices.updateRefreshToken(data[0].id,refresh_token)
     
     return {access_token,refresh_token};
    }

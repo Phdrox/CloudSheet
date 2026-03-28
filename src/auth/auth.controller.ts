@@ -59,7 +59,7 @@ export class AuthController{
     
     @Post('refresh')
     async refresh(@Res({ passthrough: true }) res:Response,@Req() req:Request){
-        const refreshToken=req.cookies['refresh_token'];
+        const refreshToken=req?.cookies['refresh_token'];
         if (!refreshToken) {
         throw new UnauthorizedException("Refresh token não encontrado");
     }
