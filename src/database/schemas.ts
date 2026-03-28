@@ -32,7 +32,7 @@ export const flows = pgTable("flows", {
 
 export const goal = pgTable("goal", {
   id: uuid("id").defaultRandom().primaryKey(),
-  idAccount: uuid("id_account").references(() => account.id),
+  id_account: uuid("id_account").references(() => account.id),
   name: varchar("name", { length: 150 }).notNull(),
   value: varchar("value"),
   have: varchar("have"),
