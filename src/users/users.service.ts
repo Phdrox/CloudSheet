@@ -99,7 +99,7 @@ export class UsersService {
                     throw new UnauthorizedException("Token inválido");
                  }
 
-                 if (user[0].token) {
+                 if (!user[0].token) {
                     const isMatch = await verify(user[0].token, refresh_token);
                     if (!isMatch) throw new UnauthorizedException("Token não confere");
                 }
