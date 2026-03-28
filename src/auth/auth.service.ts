@@ -48,7 +48,7 @@ export class AuthService {
     if(payload.type !== 'refresh'){
         throw new UnauthorizedException("Token inválido");
     }
-    const {new_access_token,new_refresh_token}=await this.userServices.updateRefreshToken(payload.email,await hash(refreshToken))
+    const {new_access_token,new_refresh_token}=await this.userServices.updateRefreshToken(payload.email,refreshToken)
     res.cookie('access_token',new_access_token,{
         httpOnly:true,
         secure:true,
