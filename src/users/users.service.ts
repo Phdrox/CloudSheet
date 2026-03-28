@@ -94,7 +94,7 @@ export class UsersService {
         async updateRefreshToken(id,refresh_token){
                 try{
                  const user=await db.select().from(account).where(d.eq(account.email,id))
-                 
+                 console.log(user)
                  if(user.length===0){
                     throw new UnauthorizedException("Token inválido");
                  }

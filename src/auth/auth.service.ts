@@ -61,7 +61,7 @@ export class AuthService {
         sameSite:'strict',
         maxAge:7*24*60* 60* 1000
     });
-    return {message:"new session"}
+    return {new_access_token,new_refresh_token}
    }
 
    async signUp({email,password,name}:IRegister){
