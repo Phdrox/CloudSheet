@@ -36,7 +36,7 @@ export class AuthService {
     
     const access_token= await this.jwtService.signAsync({...payload,type:'access'},{expiresIn:"15m"})
     const refresh_token= await this.jwtService.signAsync({...payload,type:'refresh'},{expiresIn:"7d"})
-    await this.userServices.updateRefreshToken(data[0].id,refresh_token)
+    await this.userServices.updateRefreshToken(data[0].email,refresh_token)
     
     return {access_token,refresh_token};
    }
@@ -45,9 +45,8 @@ export class AuthService {
    async refreshTokens(refreshToken:string,res:Response){
     const payload= await this.jwtService.verify(refreshToken);
     
-    if(payload.type !== 'refresh'){
-        throw new UnauthorizedException("Token inválido");
-    }
+    if(payload.type !== 'refresh') throw new UnauthorizedException("Token inválido");
+    
     const {new_access_token,new_refresh_token}=await this.userServices.updateRefreshToken(payload.email,refreshToken)
     res.cookie('access_token',new_access_token,{
         httpOnly:true,
