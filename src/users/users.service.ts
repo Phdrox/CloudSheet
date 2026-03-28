@@ -95,7 +95,7 @@ export class UsersService {
                 try{
                  const user=await db.select().from(account).where(d.eq(account.email,id))
                  
-                 if(!user){
+                 if(user.length===0){
                     throw new UnauthorizedException("Token inválido");
                  }
                  
@@ -110,8 +110,8 @@ export class UsersService {
                  await db.update(account).set({token:await hash(new_refresh_token)}).where(d.eq(account.email,id))
                  
                  return {new_access_token,new_refresh_token};
-                }catch{
-                    return {message:"Token inválido"}
+                }catch(error){
+                    throw new UnauthorizedException("Falha crítica no refresh: " + error.message);
                 }
         }
 
