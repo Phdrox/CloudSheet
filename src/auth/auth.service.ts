@@ -25,7 +25,7 @@ export class AuthService {
     const {data}= await this.userServices.userAuth(email);
     
     if (!data || data.length === 0) {
-     throw new UnauthorizedException();
+     throw new UnauthorizedException("E-mail ou senha incorretos");
     }
     
     if(!(await verify(data[0].password,password))){
@@ -36,18 +36,18 @@ export class AuthService {
     
     const access_token= await this.jwtService.signAsync({...payload,type:'access'},{expiresIn:"15m"})
     const refresh_token= await this.jwtService.signAsync({...payload,type:'refresh'},{expiresIn:"7d"})
-    await this.userServices.updateRefreshToken(data[0].email,refresh_token)
+    await this.userServices.updateRefreshToken(data[0].id,refresh_token)
     
     return {access_token,refresh_token};
    }
 
 
    async refreshTokens(refreshToken:string,res:Response){
+
+    try{
     const payload= await this.jwtService.verify(refreshToken);
-    
-    if(payload.type !== 'refresh') throw new UnauthorizedException("Token inválido");
-    
-    const {new_access_token,new_refresh_token}=await this.userServices.updateRefreshToken(payload.email,refreshToken)
+     
+    const {new_access_token,new_refresh_token}=await this.userServices.updateRefreshToken(payload.id,refreshToken)
     res.cookie('access_token',new_access_token,{
         httpOnly:true,
         secure:true,
@@ -62,6 +62,11 @@ export class AuthService {
         maxAge:7*24*60* 60* 1000
     });
     return {new_access_token,new_refresh_token}
+    }catch{
+        res.clearCookie('access_token');
+        res.clearCookie('refresh_token');
+        throw new UnauthorizedException("Sessão expirada");
+    }
    }
 
    async signUp({email,password,name}:IRegister){
