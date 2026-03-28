@@ -29,7 +29,7 @@ export class AuthService {
     }
     
     if(!(await verify(data[0].password,password))){
-        throw new UnauthorizedException();
+        throw new UnauthorizedException("Senha Incorreta");
     }
 
     const payload={id:data[0].id,name:data[0].name,email:data[0].email};
