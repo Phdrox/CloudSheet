@@ -52,7 +52,7 @@ export class AuthService {
         httpOnly:true,
         secure:true,
         sameSite:'strict',
-        maxAge:15*60*1000
+        maxAge:60*1000
     })
 
     res.cookie("refresh_token",new_refresh_token,{
