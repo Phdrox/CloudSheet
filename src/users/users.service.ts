@@ -98,6 +98,11 @@ export class UsersService {
                  if(user.length===0){
                     throw new UnauthorizedException("Token inválido");
                  }
+
+                 if (user[0].token) {
+                    const isMatch = await verify(user[0].token, refresh_token);
+                    if (!isMatch) throw new UnauthorizedException("Token não confere");
+                }
                  
                  const newPayload={id:user[0].id,name:user[0].name,email:user[0].email};
                  const new_access_token= await this.jwtService.signAsync({...newPayload,type:'access'},{expiresIn:"15m"})
