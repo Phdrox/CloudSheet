@@ -2,6 +2,7 @@ import { Injectable,UnauthorizedException} from '@nestjs/common';
 import { UsersService } from '../users/users.service.js';
 import { JwtService } from '@nestjs/jwt';
 import {verify,hash} from "argon2"
+import { Response } from 'express';
 
 type IUser={
     email:string;
@@ -41,7 +42,7 @@ export class AuthService {
    }
 
 
-   async refreshTokens(refreshToken:string,res:any){
+   async refreshTokens(refreshToken:string,res:Response){
     const payload= await this.jwtService.verify(refreshToken);
     
     if(payload.type !== 'refresh'){

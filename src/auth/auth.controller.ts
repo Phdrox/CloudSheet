@@ -63,7 +63,7 @@ export class AuthController{
         if (!refreshToken) {
         throw new UnauthorizedException("Refresh token não encontrado");
     }
-        return this.authService.refreshTokens(refreshToken,req)
+        return this.authService.refreshTokens(refreshToken,res)
     }
 }
 
