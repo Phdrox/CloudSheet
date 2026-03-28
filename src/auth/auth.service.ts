@@ -42,12 +42,12 @@ export class AuthService {
 
 
    async refreshTokens(refreshToken:string,res:any){
-    const payload= this.jwtService.verify(refreshToken);
-
+    const payload= await this.jwtService.verify(refreshToken);
+    
     if(payload.type !== 'refresh'){
         throw new UnauthorizedException("Token inválido");
     }
-    const {new_access_token,new_refresh_token}=await this.userServices.updateRefreshToken(payload.email,refreshToken)
+    const {new_access_token,new_refresh_token}=await this.userServices.updateRefreshToken(payload.email,await hash(refreshToken))
     res.cookie('access_token',new_access_token,{
         httpOnly:true,
         secure:true,

@@ -21,6 +21,9 @@ export class AuthGuard implements CanActivate{
 
         try{
             const payload= await this.jwtService.verifyAsync(token,{secret:process.env.JWT_SECRET!});
+            if (payload.type !== 'access') {
+              throw new UnauthorizedException('Tipo de token inválido para esta rota');
+            }
             request['user']=payload;
         }catch{
             throw new UnauthorizedException();

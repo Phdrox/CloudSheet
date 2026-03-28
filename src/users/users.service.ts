@@ -3,7 +3,7 @@ import { db } from "../database/db.js"
 import * as d from "drizzle-orm"
 import { account } from "../database/schemas.js" 
 import { UUID } from "crypto"
-import {hash} from "argon2"
+import {hash,verify} from "argon2"
 import { JwtService } from "@nestjs/jwt"
 
 export type User={
@@ -93,17 +93,21 @@ export class UsersService {
 
         async updateRefreshToken(id,refresh_token){
                 try{
-                 const user=await db.select().from(account).where(d.and(d.eq(account.id,id),d.eq(account.token,refresh_token)))
+                 const user=await db.select().from(account).where(d.eq(account.id,id))
                  
                  if(!user){
                     throw new UnauthorizedException("Token inválido");
                  }
                  
+                 const isMatch= await verify(user[0].token,refresh_token)
+                 if(!isMatch) throw new UnauthorizedException("Token Inválido")
+
+
                  const newPayload={id:user[0].id,name:user[0].name,email:user[0].email};
                  const new_access_token= await this.jwtService.signAsync({...newPayload,type:'access'},{expiresIn:"15m"})
                  const new_refresh_token= await this.jwtService.signAsync({...newPayload,type:'refresh'},{expiresIn:"7d"})
 
-                 await db.update(account).set({token:new_refresh_token}).where(d.and(d.eq(account.id,id),d.eq(account.token,refresh_token)))
+                 await db.update(account).set({token:await hash(new_refresh_token)}).where(d.eq(account.id,id))
                  
                  return {new_access_token,new_refresh_token};
                 }catch{
