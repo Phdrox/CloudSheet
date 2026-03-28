@@ -94,15 +94,11 @@ export class UsersService {
         async updateRefreshToken(id,refresh_token){
                 try{
                  const user=await db.select().from(account).where(d.eq(account.id,id))
-                 console.log(user)
+                 
                  if(user.length===0){
                     throw new UnauthorizedException("Token inválido");
                  }
                  
-                 const isMatch= await verify(user[0].token,refresh_token)
-                 if(!isMatch) throw new UnauthorizedException("Token Inválido")
-
-
                  const newPayload={id:user[0].id,name:user[0].name,email:user[0].email};
                  const new_access_token= await this.jwtService.signAsync({...newPayload,type:'access'},{expiresIn:"15m"})
                  const new_refresh_token= await this.jwtService.signAsync({...newPayload,type:'refresh'},{expiresIn:"7d"})
