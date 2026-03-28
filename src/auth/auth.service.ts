@@ -51,14 +51,14 @@ export class AuthService {
     res.cookie('access_token',new_access_token,{
         httpOnly:true,
         secure:true,
-        sameSite:'strict',
+        sameSite:'none',
         maxAge:60*1000
     })
 
     res.cookie("refresh_token",new_refresh_token,{
         httpOnly:true,
         secure:true,
-        sameSite:'strict',
+        sameSite:'none',
         maxAge:7*24*60* 60* 1000
     });
     return {new_access_token,new_refresh_token}
