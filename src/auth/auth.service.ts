@@ -76,7 +76,7 @@ export class AuthService {
    async clearSession(refresh_token:string){
     const payload = await this.jwtService.decode(refresh_token)
     if (payload){
-        await this.userServices.updateRefreshToken(payload.id,null);
+        await this.userServices.updateRefreshToken(payload.email,null);
     }
    }
 

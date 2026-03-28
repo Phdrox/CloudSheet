@@ -107,7 +107,7 @@ export class UsersService {
                  const new_access_token= await this.jwtService.signAsync({...newPayload,type:'access'},{expiresIn:"15m"})
                  const new_refresh_token= await this.jwtService.signAsync({...newPayload,type:'refresh'},{expiresIn:"7d"})
 
-                 await db.update(account).set({token:await hash(new_refresh_token)}).where(d.eq(account.id,id))
+                 await db.update(account).set({token:await hash(new_refresh_token)}).where(d.eq(account.email,id))
                  
                  return {new_access_token,new_refresh_token};
                 }catch{
