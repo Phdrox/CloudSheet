@@ -2,26 +2,18 @@ import { ilike, count,eq,and} from "drizzle-orm";
 import z, { number, string,coerce, uuid } from "zod";
 import { db } from "../database/db.js";
 
-const schemaPagination=z.object({
-  offset:coerce.number(),
-  page:coerce.number(),
-  limit:number(),
-  search:string().optional()
-}).transform((data)=>({...data,offset:(data.page-1)*data.limit}))
-
 const schemaPaginationId=z.object({
-  offset:coerce.number(),
-  page:coerce.number(),
-  limit:number(),
-  userId:uuid(),
+  page:coerce.number().default(1),
+  limit:number().default(20),
+  userId:uuid().optional(),
   search:string().optional()
 }).transform((data)=>({...data,offset:(data.page-1)*data.limit}))
 
 
-export type PaginationsType=z.infer<typeof schemaPagination>
+export type PaginationsType=z.input<typeof schemaPaginationId>
 
-export async function usePagination(page:any=1,search:any="",table:any,searchColumn:any){
-    const result=await schemaPagination.safeParseAsync({page,search})
+export async function usePagination({page=1,search=""}:PaginationsType,table:any,searchColumn:any){
+    const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
     
@@ -45,8 +37,8 @@ export async function usePagination(page:any=1,search:any="",table:any,searchCol
 //PagginationID 
 export type PaginationsTypeId=z.infer<typeof schemaPaginationId>
 
-export async function usePaginationId(page:any=1,search:any="",table:any,searchColumn:any,userId?:string){
-    const result=await schemaPagination.safeParseAsync({page,search})
+export async function usePaginationId({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string){
+    const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
     

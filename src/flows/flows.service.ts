@@ -27,9 +27,9 @@ export class FlowsServices{
         }    
    }
 
-   async getFlows(page,search){
+   async getFlows(page:any,search:any){
     try{
-        const {data,meta}= await usePagination(page,search,flows,flows.name)
+        const {data,meta}= await usePagination({page,search,limit:20},flows,flows.name)
         if(data.length===0){
             return {message:'No flows found'}
         }
@@ -66,7 +66,7 @@ export class FlowsServices{
 
     async getFlowByIdMyPage(id:string,page?:any,search?:any){
     try{
-        const {data,meta}= await usePaginationId(page,search,flows,flows.name,id)
+        const {data,meta}= await usePaginationId({page,search,limit:20},flows,flows.name,id)
         if(data.length===0){
             return {message:'Flow not found'}
         }

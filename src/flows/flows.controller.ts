@@ -3,7 +3,7 @@ import { FlowsServices } from './flows.service.js';
 import type { IFlows } from './interfaces/flows-type.js';
 import { AuthGuard } from '../auth/auth.guard.js';
 
-
+@UseGuards(AuthGuard)
 @Controller('flows')
 export class FlowsController{
     constructor(private readonly flowsServices:FlowsServices){}
@@ -14,20 +14,18 @@ export class FlowsController{
     }
     
     @Get('')
-    async getFlows(@Query(':page') page: number,@Query('search') search:string ){
+    async getFlows(@Query('page') page: number,@Query('search') search:string ){
         return await this.flowsServices.getFlows(page,search)
     }
-
+    
     @Get('myflows')
-    @UseGuards(AuthGuard)
     async getFlowById(@Req() req:any){
         console.log(req.user.id)
         return await this.flowsServices.getFlowByIdMy(req.user.id)
     }
     
     @Get('allflows')
-    @UseGuards(AuthGuard)
-    async getFlowByIdPage(@Query(':page') page: number,@Query('search') search:string,req:any){
+    async getFlowByIdPage(@Query('page') page: number,@Query('search') search:string,@Req() req:any){
         console.log(req.user.id)
         return await this.flowsServices.getFlowByIdMyPage(req.user.id,page,search)
     }
