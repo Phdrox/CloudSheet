@@ -120,19 +120,36 @@ export class FlowsServices{
         }
     }
     
-    async getbank(search){
-        try{
-        const data= await db.select().from(banks)
-        .where((search)?ilike(banks.name,`%${search}%`):undefined)
-        .orderBy(asc(banks.name))
-        .limit(50)
-        if(data.length===0){
-            return {message:'No bank founded'}
+   async getBanks(search) {
+    try {
+        // 1. Inicia a consulta
+        const query = db.select().from(banks);
+
+        // 2. Aplica o filtro apenas se houver termo de busca
+        if (search) {
+            query.where(ilike(banks.name, `%${search}%`));
         }
-        return data
-    }
-    catch(error){
-        return {message:'Error getting banks', error}
+
+        const data = await query
+            .orderBy(asc(banks.name))
+            .limit(50);
+
+        // 3. Retorna uma estrutura consistente
+        if (!data || data.length === 0) {
+            return { success: true, data: [], message: 'Nenhum banco encontrado' };
+        }
+
+        return { success: true, data };
+    } catch (error) {
+        // Log do erro real no servidor para depuração
+        console.error("Erro no banco de dados em getBanks:", error);
+        
+        return { 
+            success: false, 
+            message: 'Erro ao buscar bancos', 
+            // Opcional: enviar detalhes do erro apenas em desenvolvimento
+            error: process.env.NODE_ENV === 'development' ? error : undefined 
+        };
     }
     }
 }
