@@ -47,6 +47,6 @@ export class FlowsController{
 
     @Post('getallbanks')
     async postBank(){
-        return await this.flowsServices.getbank()
+        return await this.flowsServices.postbank()
     }
 }

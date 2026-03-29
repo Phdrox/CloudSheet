@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { db } from "../database/db.js";
 import type { IFlows } from "./interfaces/flows-type.js";
-import { eq } from "drizzle-orm";
+import { eq,ilike } from "drizzle-orm";
 import {banks, flows} from "../database/schemas.js"
 import { schemaFlows } from "../schemas/schemas-zod.js";
 import { usePagination, usePaginationId } from "../hook/pagination.js";
@@ -98,7 +98,7 @@ export class FlowsServices{
         }
     }
 
-    async getbank(){
+    async postbank(){
         try{
             const {data:bankData}= await axios.get("https://brasilapi.com.br/api/banks/v1")
             
@@ -114,6 +114,19 @@ export class FlowsServices{
         }catch(err){
             console.log(err)
         }
+    }
+    
+    async getbank(search){
+        try{
+        const data= await db.select().from(banks).where((search)?ilike(banks.name,`%${search}%`):undefined)
+        if(data.length===0){
+            return {message:'No bank founded'}
+        }
+        return data
+    }
+    catch(error){
+        return {message:'Error getting banks', error}
+    }
     }
 }
 
