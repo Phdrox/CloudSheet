@@ -45,13 +45,4 @@ export class FlowsController{
         return await this.flowsServices.deleteFlow(id)
     }
 
-    @Get('getallbanks')
-    async getBank(@Query('search') search){
-        return await this.flowsServices.getBanks(search)
-    }
-
-    @Get('bank')
-    async postBank(){
-        return await this.flowsServices.postbank()
-    }
 }

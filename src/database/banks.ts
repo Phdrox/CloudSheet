@@ -1,7 +1,7 @@
 
 import { db } from "../database/db.js";
 import {banks, flows} from "../database/schemas.js"
-import { IBank } from "../flows/interfaces/bank-type.js";
+import { IBank } from "../banks/bank-type.js";
 import axios from "axios";
 
 
