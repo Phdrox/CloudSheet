@@ -58,7 +58,7 @@ export class FlowsServices{
     try{
         const data=await db.select({flow:flows,bank:{name:banks.name,compeCode:banks.compeCode}})
         .from(flows)
-        .leftJoin(banks,eq(flows.id_name_banks,banks.ispb))
+        .leftJoin(banks,eq(flows.id_name_banks,banks.id))
         .where(eq(flows.id_account,id))
         
         if(data.length===0){
