@@ -44,4 +44,9 @@ export class FlowsController{
     async deleteFlow(@Param('id') id:string){
         return await this.flowsServices.deleteFlow(id)
     }
+
+    @Post('getallbanks')
+    async postBank(){
+        return await this.flowsServices.getbank()
+    }
 }
