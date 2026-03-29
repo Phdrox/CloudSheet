@@ -27,7 +27,7 @@ export const flows = pgTable("flows", {
   id: uuid("id").defaultRandom().primaryKey(),
   id_categories: varchar("id_categories").references(() => categories.type_categorie),
   id_account:uuid('id_account').notNull().references(()=> account.id),
-  id_name_banks:varchar('id_name_banks').notNull().references(()=>banks.id),
+  id_name_banks:uuid('id_name_banks').notNull().references(()=>banks.id),
   name: varchar("name", { length: 255 }).notNull(),
   type: varchar("type", { length: 120 }).notNull(),
   payment: varchar("payment", { length: 130 }).notNull(),
