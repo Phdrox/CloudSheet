@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { db } from "src/database/db.js";
-import { banks } from "src/database/schemas.js";
+import { db } from "../database/db.js";
+import { banks } from "../database/schemas.js";
 import axios from "axios"
 import { IBank } from "./bank-type.js";
 import { ilike,asc } from "drizzle-orm";
