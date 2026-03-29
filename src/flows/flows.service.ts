@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { db } from "../database/db.js";
 import type { IFlows } from "./interfaces/flows-type.js";
-import { eq,ilike } from "drizzle-orm";
+import { asc, eq,ilike } from "drizzle-orm";
 import {banks, flows} from "../database/schemas.js"
 import { schemaFlows } from "../schemas/schemas-zod.js";
 import { usePagination, usePaginationId } from "../hook/pagination.js";
@@ -56,7 +56,11 @@ export class FlowsServices{
    
     async getFlowByIdMy(id:string){
     try{
-        const data=await db.select().from(flows).where(eq(flows.id_account,id))
+        const data=await db.select({flow:flows,bank:{name:banks.name,compeCode:banks.compeCode}})
+        .from(flows)
+        .leftJoin(banks,eq(flows.id_name_banks,banks.ispb))
+        .where(eq(flows.id_account,id))
+        
         if(data.length===0){
             return {message:'Flow not found'}
         }
@@ -118,7 +122,10 @@ export class FlowsServices{
     
     async getbank(search){
         try{
-        const data= await db.select().from(banks).where((search)?ilike(banks.name,`%${search}%`):undefined)
+        const data= await db.select().from(banks)
+        .where((search)?ilike(banks.name,`%${search}%`):undefined)
+        .orderBy(asc(banks.name))
+        .limit(50)
         if(data.length===0){
             return {message:'No bank founded'}
         }
