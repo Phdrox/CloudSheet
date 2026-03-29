@@ -1,5 +1,4 @@
-import {pgTable,varchar,timestamp,real,date,integer,uuid,index} from "drizzle-orm/pg-core"
-import { string } from "zod"
+import {pgTable,varchar,timestamp,real,date,integer,uuid,serial,boolean} from "drizzle-orm/pg-core"
 
 export const account= pgTable("account",{
  id:uuid('id').defaultRandom().primaryKey(),
@@ -21,6 +20,7 @@ export const flows = pgTable("flows", {
   id: uuid("id").defaultRandom().primaryKey(),
   id_categories: varchar("id_categories").references(() => categories.type_categorie),
   id_account:uuid('id_account').notNull().references(()=> account.id),
+  id_namebank:varchar().notNull().references(()=>banks.name),
   name: varchar("name", { length: 255 }).notNull(),
   type: varchar("type", { length: 120 }).notNull(),
   payment: varchar("payment", { length: 130 }).notNull(),
@@ -41,6 +41,16 @@ export const goal = pgTable("goal", {
     .$onUpdate(() => new Date())
     .notNull(),
 })
+
+export const banks = pgTable('banks', {
+  id: serial('id').primaryKey(),
+  ispb: varchar('ispb', { length: 8 }).unique().notNull(),
+  compeCode: varchar('compe_code', { length: 3 }),
+  name: varchar('name', { length: 255 }).notNull(),
+  logoUrl: varchar('logo_url', { length: 500 }),
+  isActive: boolean('is_active').default(true),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
 
 
 

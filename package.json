@@ -24,6 +24,7 @@
     "drizzle:migrate": "drizzle-kit migrate",
     "drizzle:push": "drizzle-kit push",
     "seed": "tsx src/database/seed-categories.ts",
+    "db:seed": "tsx ./src/database/banks.ts",
     "deploy": "pnpm drizzle:push && pnpm seed && pnpm build"
   },
   "dependencies": {
@@ -36,6 +37,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@thallesp/nestjs-better-auth": "^2.4.0",
     "argon2": "^0.44.0",
+    "axios": "^1.14.0",
     "better-auth": "^1.4.18",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.3.1",
