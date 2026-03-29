@@ -18,9 +18,9 @@ export const categories=pgTable('category',{
 
 export const banks = pgTable('banks', {
   id: uuid('id').defaultRandom().primaryKey(),
-  ispb: varchar('ispb', { length: 8 }).notNull(),
+  ispb: varchar('ispb', { length: 8 }).notNull().unique(),
   compeCode: varchar('compe_code', { length: 3 }),
-  name:varchar()
+  name:varchar().notNull()
 });
 
 export const flows = pgTable("flows", {
