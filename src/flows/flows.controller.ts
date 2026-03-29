@@ -47,7 +47,7 @@ export class FlowsController{
 
     @Get('getallbanks')
     async getBank(@Query('search') search){
-        return await this.flowsServices.getbank(search)
+        return await this.flowsServices.getBanks(search)
     }
 
     @Get('bank')
