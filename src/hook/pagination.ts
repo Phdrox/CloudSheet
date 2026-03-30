@@ -75,13 +75,13 @@ export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,ta
     const finalFilter = and(...[userFilter, searchFilter].filter(Boolean));
     const [totalResult, rows] = await Promise.all([
         db.select({ value: count() }).from(table).where(finalFilter),
-        db.select({flow:{
+        db.select({
             id: table.id,
             name: table.name,
             type: table.type,
             payment: table.payment,
             price: table.price,
-            date: table.date},
+            date: table.date,
             bank:banks.name
         })
         .from(table)
