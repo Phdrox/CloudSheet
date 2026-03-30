@@ -82,7 +82,8 @@ export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,ta
             payment: table.payment,
             price: table.price,
             date: table.date},
-            bank:{name:banks.name,compeCode:banks.compeCode}})
+            bank:banks.name
+        })
         .from(table)
         .where(finalFilter)
         .leftJoin(banks,eq(table.id_name_banks,banks.id)).limit(limit).offset(offset)
