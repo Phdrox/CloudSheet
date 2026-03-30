@@ -4,7 +4,7 @@ import type { IFlows } from "./interfaces/flows-type.js";
 import { asc, eq,ilike,sql } from "drizzle-orm";
 import {banks, flows} from "../database/schemas.js"
 import { schemaFlows } from "../schemas/schemas-zod.js";
-import { usePagination, usePaginationId } from "../hook/pagination.js";
+import { usePagination, usePaginationId, usePaginationIdBanks } from "../hook/pagination.js";
 
 
 @Injectable()
@@ -71,12 +71,11 @@ export class FlowsServices{
 
     async getFlowByIdMyPage(id:string,page?:any,search?:any){
     try{
-        const {data,meta}= await usePaginationId({page,search,limit:20},flows,flows.name,id)
+        const {data,meta}= await usePaginationIdBanks({page,search,limit:20},flows,flows.name,id)
         if(data.length===0){
             return {message:'Flow not found'}
-        }
-        const idBank= data.forEach(async (i:any)=> await db.select().from(banks).where(eq(banks.id,i.id_name_banks)))
-        return {message:'Flow found', data,meta,name_bank:idBank}
+        }      
+        return {message:'Flow found', data,meta}
     }
     catch(error){
         return {message:'Error getting flow', error}
