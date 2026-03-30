@@ -38,8 +38,7 @@ export class BankServices{
         }
 
         const data = await query
-            .orderBy(asc(banks.name))
-            .limit(50);
+            .orderBy(asc(banks.name));
 
         // 3. Retorna uma estrutura consistente
         if (!data || data.length === 0) {

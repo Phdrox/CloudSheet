@@ -14,7 +14,7 @@ async function Bank(){
                 const nameStr = bank.fullName || bank.name || "Banco Desconhecido"; // Garante string
                 const codeStr = bank.code !== null && bank.code !== undefined ? String(bank.code) : null;
                 await db.insert(banks).values({ispb:ispbStr,name:nameStr,compeCode:codeStr}).onConflictDoUpdate({target:banks.ispb,set: {
-                name: bank.fullName,
+                name: bank.name,
             },})
             }
 
