@@ -1,12 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { db } from "../database/db.js";
 import type { IFlows } from "./interfaces/flows-type.js";
-import { asc, eq,ilike } from "drizzle-orm";
+import { asc, eq,ilike,sql } from "drizzle-orm";
 import {banks, flows} from "../database/schemas.js"
 import { schemaFlows } from "../schemas/schemas-zod.js";
 import { usePagination, usePaginationId } from "../hook/pagination.js";
-import { IBank } from "../banks/bank-type.js";
-import axios from "axios";
+
 
 @Injectable()
 export class FlowsServices{
@@ -58,8 +57,8 @@ export class FlowsServices{
     try{
         const data=await db.select({flow:flows,bank:{name:banks.name,compeCode:banks.compeCode}})
         .from(flows)
-        .leftJoin(banks,eq(flows.id_name_banks,banks.name))
-        .where(eq(flows.id_account,id))
+        .leftJoin(banks,eq(flows.id_name_banks,banks.id))
+        .where(eq(flows.id_account,sql`${id}::uuid`))
         
         if(data.length===0){
             return {message:'Flow not found'}

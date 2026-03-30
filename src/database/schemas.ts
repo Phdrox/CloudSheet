@@ -20,14 +20,14 @@ export const banks = pgTable('banks', {
   id: uuid('id').defaultRandom().primaryKey(),
   ispb: varchar('ispb', { length: 8 }).notNull().unique(),
   compeCode: varchar('compe_code', { length: 3 }),
-  name:varchar().notNull().unique()
+  name:varchar().notNull()
 });
 
 export const flows = pgTable("flows", {
   id: uuid("id").defaultRandom().primaryKey(),
   id_categories: varchar("id_categories").references(() => categories.type_categorie),
   id_account:uuid('id_account').notNull().references(()=> account.id),
-  id_name_banks:varchar('id_name_banks').notNull().references(()=>banks.name),
+  id_name_banks:uuid('id_name_banks').notNull().references(()=>banks.id),
   name: varchar("name", { length: 255 }).notNull(),
   type: varchar("type", { length: 120 }).notNull(),
   payment: varchar("payment", { length: 130 }).notNull(),
