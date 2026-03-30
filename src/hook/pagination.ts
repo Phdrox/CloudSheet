@@ -75,7 +75,7 @@ export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,ta
     const finalFilter = and(...[userFilter, searchFilter].filter(Boolean));
     const [totalResult, rows] = await Promise.all([
         db.select({ value: count() }).from(table).where(finalFilter),
-        db.select({flow:table,bank:{name:banks.name,compeCode:banks.compeCode}}).from(table).where(finalFilter).leftJoin(banks,eq(table.id_names_banks,banks.id)).limit(limit).offset(offset)
+        db.select({flow:table,bank:{name:banks.name,compeCode:banks.compeCode}}).from(table).where(finalFilter).leftJoin(banks,eq(table.id_name_banks,banks.id)).limit(limit).offset(offset)
     ]);
 
     const totalCount = totalResult[0].value;
