@@ -75,7 +75,7 @@ export class FlowsServices{
         if(data.length===0){
             return {message:'Flow not found'}
         }
-        const idBank= data.map(async (i:any)=> await db.select({name:banks.name}).from(banks).where(eq(banks.id,i.id_name_banks)))
+        const idBank= data.forEach(async (i:any)=> await db.select().from(banks).where(eq(banks.id,i.id_name_banks)))
         return {message:'Flow found', data,meta,name_bank:idBank}
     }
     catch(error){
