@@ -75,7 +75,8 @@ export class FlowsServices{
         if(data.length===0){
             return {message:'Flow not found'}
         }
-        return {message:'Flow found', data,meta}
+        const idBank=data.map((i:any)=>db.select({name:banks.name}).from(banks).where(eq(banks.id,i.id_name_banks)))
+        return {message:'Flow found', data,meta,name_bank:idBank}
     }
     catch(error){
         return {message:'Error getting flow', error}
