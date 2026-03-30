@@ -79,6 +79,7 @@ export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,ta
             id: table.id,
             name: table.name,
             type: table.type,
+            id_categories:table.id_categories,
             payment: table.payment,
             price: table.price,
             date: table.date,
