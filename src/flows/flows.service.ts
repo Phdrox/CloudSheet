@@ -52,6 +52,7 @@ export class FlowsServices{
             price: flows.price,
             date: flows.date,
             bank:banks.name,
+            id_bank:flows.id_name_banks,
             compeCode:banks.compeCode})
             .from(flows).leftJoin(banks,eq(flows.id_name_banks,banks.id)).where(eq(flows.id,id))
         if(data.length===0){
@@ -73,6 +74,7 @@ export class FlowsServices{
             price: flows.price,
             date: flows.date,
             bank:banks.name,
+            id_bank:flows.id_name_banks,
             compeCode:banks.compeCode})
         .from(flows)
         .leftJoin(banks,eq(flows.id_name_banks,banks.id))
