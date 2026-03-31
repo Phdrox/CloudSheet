@@ -43,7 +43,17 @@ export class FlowsServices{
 
    async getFlowById(id:string){
     try{
-        const data=await db.select().from(flows).where(eq(flows.id,id))
+        const data=await db.select(
+            {id: flows.id,
+            name: flows.name,
+            type: flows.type,
+            id_categories:flows.id_categories,
+            payment: flows.payment,
+            price: flows.price,
+            date: flows.date,
+            bank:banks.name,
+            compeCode:banks.compeCode})
+            .from(flows).where(eq(flows.id,id))
         if(data.length===0){
             return {message:'Flow not found'}
         }
@@ -55,7 +65,15 @@ export class FlowsServices{
    
     async getFlowByIdMy(id:string){
     try{
-        const data=await db.select({flow:flows,bank:{name:banks.name,compeCode:banks.compeCode}})
+        const data=await db.select({id: flows.id,
+            name: flows.name,
+            type: flows.type,
+            id_categories:flows.id_categories,
+            payment: flows.payment,
+            price: flows.price,
+            date: flows.date,
+            bank:banks.name,
+            compeCode:banks.compeCode})
         .from(flows)
         .leftJoin(banks,eq(flows.id_name_banks,banks.id))
         .where(eq(flows.id_account,sql`${id}::uuid`))

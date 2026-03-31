@@ -30,8 +30,8 @@ export class FlowsController{
         return await this.flowsServices.getFlowByIdMyPage(req.user.id,page,search)
     }
     
-    @Get(':id')
-    async getFlowId(@Param('id') id:string){
+    @Get('details')
+    async getFlowId(@Query('id') id:string){
         return await this.flowsServices.getFlowById(id)
     }
 
