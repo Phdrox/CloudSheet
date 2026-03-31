@@ -53,7 +53,7 @@ export class FlowsServices{
             date: flows.date,
             bank:banks.name,
             compeCode:banks.compeCode})
-            .from(flows).where(eq(flows.id,id))
+            .from(flows).leftJoin(banks,eq(flows.id_name_banks,banks.id)).where(eq(flows.id,id))
         if(data.length===0){
             return {message:'Flow not found'}
         }
