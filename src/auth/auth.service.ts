@@ -83,7 +83,7 @@ export class AuthService {
         secret: process.env.JWT_REFRESH_SECRET
     })
     if (payload){
-        await this.userServices.updateRefreshToken(payload.email,refresh_token);
+        await this.userServices.updateRefreshToken(payload.id,'');
     }
    }
 
