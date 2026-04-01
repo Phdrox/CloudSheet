@@ -3,6 +3,9 @@ import { UsersService } from '../users/users.service.js';
 import { JwtService } from '@nestjs/jwt';
 import {verify,hash} from "argon2"
 import { Response } from 'express';
+import { db } from 'src/database/db.js';
+import { account } from 'src/database/schemas.js';
+import { eq } from 'drizzle-orm';
 
 type IUser={
     email:string;
@@ -77,12 +80,22 @@ export class AuthService {
     }
     return {message}
    }
+   
+   async removeRefreshToken(id: string) {
+    // Apenas seta o token como null no banco, sem gerar novos tokens
+    return await db.update(account)
+        .set({ token: null }) 
+        .where(eq(account.id, id));
+}
+
 
    async clearSession(refresh_token:string){
+    try{
     const payload = this.jwtService.decode(refresh_token);
     if (payload){
-        await this.userServices.updateRefreshToken(payload.email,null);
+        await this.removeRefreshToken(payload.id);
     }
+    }catch{}
    }
 
 }
