@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { db } from "../database/db.js";
 import type { IFlows } from "./interfaces/flows-type.js";
-import { asc, eq,ilike,sql } from "drizzle-orm";
+import { eq,sql } from "drizzle-orm";
 import {banks, flows} from "../database/schemas.js"
 import { schemaFlows } from "../schemas/schemas-zod.js";
-import { usePagination, usePaginationId, usePaginationIdBanks } from "../hook/pagination.js";
+import { usePagination, usePaginationIdBanks } from "../hook/pagination.js";
 
 
 @Injectable()
@@ -104,7 +104,7 @@ export class FlowsServices{
     async updateFlow(id:string, flow:IFlows){
         const validate= await schemaFlows.safeParseAsync(flow)
         if(validate.success){
-           await db.update(flows).set(flows).where(eq(flows.id,id)).returning()
+           await db.update(flows).set(validate.data).where(eq(flows.id,id)).returning()
            return {message:'Flow updated successfully'}
         }else{
             return {message:'Error updating flow'}

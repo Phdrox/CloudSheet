@@ -1,5 +1,5 @@
 
-import { object,string,number,uuid,coerce} from "zod";
+import { object,string,number,uuid,coerce,date} from "zod";
 
 export const schemaUser=object({
   name: string(),
@@ -14,8 +14,8 @@ export const schemaFlows=object({
     name:string().max(255),
     type:string().max(20),
     payment:string().max(40),
-    price:coerce.number(),
-    date:coerce.date(),
+    price:string(),
+    date:string(),
 })
 
 export const schemaGoal=object({

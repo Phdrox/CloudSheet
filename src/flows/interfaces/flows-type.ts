@@ -5,6 +5,6 @@ export interface IFlows{
     name:string,
     type:string,
     payment:string,
-    price:number,
-    date:Date|any,
+    price:string,
+    date:Date| string| any,
 }
