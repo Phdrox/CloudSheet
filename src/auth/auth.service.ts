@@ -3,8 +3,8 @@ import { UsersService } from '../users/users.service.js';
 import { JwtService } from '@nestjs/jwt';
 import {verify,hash} from "argon2"
 import { Response } from 'express';
-import { db } from 'src/database/db.js';
-import { account } from 'src/database/schemas.js';
+import { db } from '../database/db.js';
+import { account } from '../database/schemas.js';
 import { eq } from 'drizzle-orm';
 
 type IUser={
