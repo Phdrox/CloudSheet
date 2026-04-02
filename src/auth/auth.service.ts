@@ -25,7 +25,7 @@ export class AuthService {
 
    async signIn({email,password}:IUser):Promise<any>{
 
-    const {data}= await this.userServices.userAuth(email);
+    const {data}:any= await this.userServices.userAuth(email);
     
     if (!data || data.length === 0) {
      throw new UnauthorizedException("E-mail ou senha incorretos");
@@ -39,7 +39,7 @@ export class AuthService {
     
     const access_token= await this.jwtService.signAsync({...payload,type:'access'},{expiresIn:"15m"})
     const refresh_token= await this.jwtService.signAsync({...payload,type:'refresh'},{expiresIn:"7d"})
-    await this.userServices.updateRefreshToken(data[0].id,refresh_token)
+    await this.userServices.saveRefreshToken(data[0].id,refresh_token)
     
     return {access_token,refresh_token};
    }
@@ -48,14 +48,14 @@ export class AuthService {
    async refreshTokens(refreshToken:string,res:Response){
 
     try{
-    const payload= await this.jwtService.verify(refreshToken);
+    const payload= await this.jwtService.verify(refreshToken,{secret:process.env.JWT_SECRET!});
      
-    const {new_access_token,new_refresh_token}=await this.userServices.updateRefreshToken(payload.id,refreshToken)
+    const {new_access_token,new_refresh_token}=await this.userServices.validateAndRotateRefreshToken(payload.id,refreshToken)
     res.cookie('access_token',new_access_token,{
         httpOnly:true,
         secure:true,
         sameSite:'lax',
-        maxAge:60*1000
+        maxAge:15*60*1000
     })
 
     res.cookie("refresh_token",new_refresh_token,{
@@ -97,5 +97,8 @@ export class AuthService {
     }
     }catch{}
    }
+
+   
+
 
 }

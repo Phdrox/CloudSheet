@@ -46,7 +46,7 @@ export class UsersService {
             }
         }
 
-        async putUserById(id:UUID,body:User,type){
+        async putUserById(id:UUID,body:User,type:any){
             try{
                 await db.update(account)
                 .set({...body,type})
@@ -91,7 +91,13 @@ export class UsersService {
             }
         }
 
-        async updateRefreshToken(id,refresh_token){
+         async saveRefreshToken(id: string, refresh_token: string) {
+            await db.update(account)
+            .set({ token: await hash(refresh_token) })
+            .where(d.eq(account.id, id));
+    }
+
+        async validateAndRotateRefreshToken(id:string,refresh_token:string){
                 try{
                  const user=await db.select().from(account).where(d.eq(account.id,id))
                  
@@ -99,21 +105,35 @@ export class UsersService {
                     throw new UnauthorizedException("Token inválido");
                  }
 
-                 if (user[0].token) {
-                    const isMatch = await verify(user[0].token, refresh_token);
-                    if (!isMatch) throw new UnauthorizedException("Token não confere");
+                if (!user[0].token) {
+                    throw new UnauthorizedException("Sem sessão ativa");
                 }
+
+                const isMatch = await verify(user[0].token, refresh_token);
+                if (!isMatch) {
+                    throw new UnauthorizedException("Token inválido");
+                }           
                  
                  const newPayload={id:user[0].id,name:user[0].name,email:user[0].email};
-                 const new_access_token= await this.jwtService.signAsync({...newPayload,type:'access'},{expiresIn:"15m"})
-                 const new_refresh_token= await this.jwtService.signAsync({...newPayload,type:'refresh'},{expiresIn:"7d"})
+                 
+                 const new_access_token= await this.jwtService.signAsync(
+                    {...newPayload,type:'access'},
+                    {expiresIn:"15m"}
+                )
+                 
+                const new_refresh_token= await this.jwtService.signAsync(
+                    {...newPayload,type:'refresh'},
+                    {expiresIn:"7d"}
+                )
 
-                 await db.update(account).set({token:await hash(new_refresh_token)}).where(d.eq(account.id,id))
+                 await this.saveRefreshToken(id,new_refresh_token)
                  
                  return {new_access_token,new_refresh_token};
-                }catch(error){
+                }catch(error:any){
                     throw new UnauthorizedException("Falha crítica no refresh: " + error.message);
                 }
         }
+
+       
 
 }
