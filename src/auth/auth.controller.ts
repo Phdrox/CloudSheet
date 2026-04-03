@@ -51,12 +51,17 @@ export class AuthController{
             await this.authService.clearSession(refreshToken)
         }
 
-        res.clearCookie('access_token',{httpOnly: true,
+    res.clearCookie('access_token',{httpOnly: true,
+        secure: true, // true em produção
+        sameSite: 'lax',
+        path: '/'
+    });
+    
+    res.clearCookie('refresh_token',{httpOnly: true,
     secure: true, // true em produção
-    sameSite: 'lax',});
-        res.clearCookie('refresh_token',{httpOnly: true,
-    secure: true, // true em produção
-    sameSite: 'lax',});
+    sameSite: 'lax',
+    path: '/'
+    });
 
         return {message:'Logged out'};
     }
