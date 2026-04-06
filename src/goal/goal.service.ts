@@ -19,9 +19,9 @@ export class GoalServices{
        }
     }
 
-    async getGoals(page,search){
+    async getGoals(page:number,search:string){
         try{
-            const {data,meta}=await usePagination(page,search,goal,goal.name)
+            const {data,meta}=await usePagination({page,search,limit:20},goal,goal.name)
             if (data.length==0){
                 return {message:"Not found goal"}
             }
