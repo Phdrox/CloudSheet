@@ -1,3 +1,4 @@
 function IAFinance(){
-    console.log('Deu certo')
+    console.log('Deu certo a ia ')
+    
 }
