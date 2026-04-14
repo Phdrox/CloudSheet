@@ -5,6 +5,7 @@ import { account } from "../database/schemas.js"
 import { UUID } from "crypto"
 import {hash,verify} from "argon2"
 import { JwtService } from "@nestjs/jwt"
+import { email } from "zod"
 
 export type User={
     email:string;
@@ -58,8 +59,10 @@ export class UsersService {
         }
         
         async createUser(body:User){
-            
-            try{
+           const verifyEmail=await db.select({email:account.email}).from(account);
+           verifyEmail ?? {message:'Email já existe'}; 
+           
+           try{
                 await db.insert(account).values({...body,password:await hash(body.password)})
                 return {message:"Usuário criado com successo"}
             }

@@ -1,5 +1,5 @@
 {
-  "id": "a87ef60e-83bb-43c7-ab9b-29f1d44f37e5",
+  "id": "fc9fbeaa-c071-46d7-a7cb-3ddaffa4ae18",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -15,8 +15,8 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "user": {
-          "name": "user",
+        "name": {
+          "name": "name",
           "type": "varchar(150)",
           "primaryKey": false,
           "notNull": true
@@ -38,6 +38,18 @@
           "type": "varchar(10)",
           "primaryKey": false,
           "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar(12)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -63,6 +75,52 @@
           "nullsNotDistinct": false,
           "columns": [
             "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.banks": {
+      "name": "banks",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ispb": {
+          "name": "ispb",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "compe_code": {
+          "name": "compe_code",
+          "type": "varchar(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "banks_ispb_unique": {
+          "name": "banks_ispb_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ispb"
           ]
         }
       },
@@ -127,12 +185,18 @@
         },
         "id_categories": {
           "name": "id_categories",
-          "type": "integer",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
         "id_account": {
           "name": "id_account",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id_name_banks": {
+          "name": "id_name_banks",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -157,7 +221,7 @@
         },
         "price": {
           "name": "price",
-          "type": "real",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -181,33 +245,17 @@
           "notNull": true
         }
       },
-      "indexes": {
-        "flows_category_idx": {
-          "name": "flows_category_idx",
-          "columns": [
-            {
-              "expression": "id_categories",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
-        "flows_id_categories_category_id_fk": {
-          "name": "flows_id_categories_category_id_fk",
+        "flows_id_categories_category_type_categorie_fk": {
+          "name": "flows_id_categories_category_type_categorie_fk",
           "tableFrom": "flows",
           "tableTo": "category",
           "columnsFrom": [
             "id_categories"
           ],
           "columnsTo": [
-            "id"
+            "type_categorie"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -218,6 +266,19 @@
           "tableTo": "account",
           "columnsFrom": [
             "id_account"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "flows_id_name_banks_banks_id_fk": {
+          "name": "flows_id_name_banks_banks_id_fk",
+          "tableFrom": "flows",
+          "tableTo": "banks",
+          "columnsFrom": [
+            "id_name_banks"
           ],
           "columnsTo": [
             "id"
@@ -257,13 +318,13 @@
         },
         "value": {
           "name": "value",
-          "type": "real",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
         "have": {
           "name": "have",
-          "type": "real",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
