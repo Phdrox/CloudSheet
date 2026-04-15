@@ -21,10 +21,11 @@ async getAllGoals(@Body() page: number,search:string){
     return await this.goalService.getGoals(page,search)
 }
 
+
 @UseGuards(AuthGuard)
 @Get("mygoals")
 async getGoalById(@Req() req:any){
-    return await this.goalService.getGoalById(req.user.id)
+    return await this.goalService.getGoalsByIdMy(req.user.id)
 }
 
 @UseGuards(AuthGuard)

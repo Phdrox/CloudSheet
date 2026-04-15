@@ -2,7 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {db} from "../database/db.js";
 import { goal } from "../database/schemas.js";
 import type { IGoal } from "./interfaces/goal-type.js";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { schemaGoal } from "../schemas/schemas-zod.js";
 import { usePagination } from "../hook/pagination.js";
 
@@ -31,6 +31,25 @@ export class GoalServices{
             return {message:"Error when get all goals"}
         }
     }
+
+       async getGoalsByIdMy(id:string){
+        try{
+            const data=await db.select({id: goal.id,
+              name: goal.name,
+              have:goal.have,
+              value:goal.value
+            })
+            .from(goal)
+            .where(eq(goal.id_account,sql`${id}::uuid`))
+            
+            if(data.length===0){
+                return {message:'Flow not found'}
+            }
+            return {message:'Flow found', data}
+        }
+        catch(error){
+            return {message:'Error getting flow', error}
+        }}
 
     async getGoalById(id:string){
         try{
