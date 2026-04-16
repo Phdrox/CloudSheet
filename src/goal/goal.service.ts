@@ -43,12 +43,12 @@ export class GoalServices{
             .where(eq(goal.id_account,sql`${id}::uuid`))
             
             if(data.length===0){
-                return {message:'Flow not found'}
+                return {message:'Goals not found'}
             }
-            return {message:'Flow found', data}
+            return {message:'Goals found', data}
         }
         catch(error){
-            return {message:'Error getting flow', error}
+            return {message:'Error getting goal', error}
         }}
 
     async getGoalById(id:string){
