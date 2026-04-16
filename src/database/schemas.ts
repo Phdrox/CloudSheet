@@ -2,7 +2,7 @@ import {pgTable,varchar,timestamp,real,date,integer,uuid,serial,boolean} from "d
 
 export const account= pgTable("account",{
  id:uuid('id').defaultRandom().primaryKey(),
- name:varchar("name",{length:150}).notNull(),
+ name:varchar("name").notNull(),
  email:varchar("email").notNull().unique(), 
  password:varchar("password").notNull(),
  type:varchar({length:10}).notNull().$defaultFn(()=>'normal'),
@@ -41,7 +41,7 @@ export const flows = pgTable("flows", {
 export const goal = pgTable("goal", {
   id: uuid("id").defaultRandom().primaryKey(),
   id_account: uuid("id_account").references(() => account.id),
-  name: varchar("name", { length: 150 }).notNull(),
+  name: varchar("name").notNull(),
   value: varchar("value"),
   have: varchar("have"),
   createdAt: timestamp("created_at").defaultNow().notNull(),

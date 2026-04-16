@@ -11,7 +11,7 @@ export const schemaUser=object({
 export const schemaFlows=object({
     id_categories:string(),
     id_account:uuid(),
-    name:string().max(255),
+    name:string(),
     type:string().max(20),
     payment:string().max(40),
     price:string(),
@@ -20,7 +20,7 @@ export const schemaFlows=object({
 
 export const schemaGoal=object({
     id_user:uuid(),
-    name:string().max(150),
+    name:string(),
     value:number(),
     have:number()
 })
