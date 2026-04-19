@@ -19,7 +19,7 @@ export const schemaFlows=object({
 })
 
 export const schemaGoal=object({
-    id_user:uuid(),
+    id_account:uuid(),
     name:string(),
     value:string(),
     have:string()
