@@ -9,7 +9,7 @@ export class GoalController{
         private readonly goalService:GoalServices
     ){}
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard) 
 @Post("")
 async createGoal(@Body() goals:IGoal){
     return await this.goalService.createGoal(goals)
