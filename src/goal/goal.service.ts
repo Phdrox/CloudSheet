@@ -80,7 +80,7 @@ export class GoalServices{
 
     async deleteGoal(id:string){
         try{
-            await db.delete(goal).where(eq(goal.id,id))
+            await db.delete(goal).where(eq(goal.id,id)).returning()
             return {message:"Delete with successfuly"}
         }
         catch(error){
