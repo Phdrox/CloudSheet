@@ -12,13 +12,11 @@ export class GoalServices{
     async createGoal(goals:IGoal){
         const validate = await schemaGoal.safeParseAsync(goals);
         if (validate.success) {
-    // IMPORTANTE: Use o validate.data (dados limpos pelo Zod) em vez de goals
     await db.insert(goal).values(goals).returning();
     return { message: "Goal created successfully" };
   } else {
-    // Log do erro para você ver no console do terminal o que o Zod barrou
     console.error("Erro de validação:", validate.error.format());
-    return { 
+    return {  
       message: "Error when creating goal", 
       details: validate.error.issues 
     };
