@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {BadRequestException, Injectable} from "@nestjs/common";
 import {db} from "../database/db.js";
 import { goal } from "../database/schemas.js";
 import type { IGoal } from "./interfaces/goal-type.js";
@@ -71,10 +71,19 @@ export class GoalServices{
     async updateGoal(id:string,goals:IGoal){
         const validate=await schemaGoal.safeParseAsync(goals)
         if(validate.success){
-            await db.update(goal).set(goals).where(eq(goal.id,id))
+            await db.update(goal).set(
+                {
+                name:validate.data.name,
+                id_account:validate.data.id_account,
+                have:validate.data.have,
+                value:validate.data.value              
+                }).where(eq(goal.id,id))
             return{message:"update with successfuly"}
         }else{
-            return {message:"Error when update goal"}
+            throw new BadRequestException({
+            message: "Erro de validação nos dados da meta",
+            errors: validate.error.flatten()
+        });
         }
     }
 
