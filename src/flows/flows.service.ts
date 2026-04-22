@@ -66,9 +66,6 @@ export class FlowsServices{
    
     async getFlowByIdMy(id:string){
     try{
-        const sumEarn = sql`SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'ganho')`;
-        const sumExpense = sql`SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'gasto')`;
-        const sumTotal = sql`${sumEarn} - ${sumExpense}`;   
         const data=await db.select({id: flows.id,
             name: flows.name,
             type: flows.type,
@@ -79,10 +76,6 @@ export class FlowsServices{
             bank:banks.name,
             id_bank:flows.id_name_banks,
             compeCode:banks.compeCode,
-            sumEarn: sumEarn,
-            sumExpense: sumExpense,
-            sumTotal: sumTotal,
-            constant: flows.constant
         })
         .from(flows)
         .leftJoin(banks,eq(flows.id_name_banks,banks.id))
