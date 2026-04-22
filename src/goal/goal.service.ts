@@ -42,7 +42,7 @@ export class GoalServices{
               name: goal.name,
               have:goal.have,
               value:goal.value,
-              lack:sql`CAST(${goal.have} AS DECIMAL(10,2)) - CAST(${goal.value} AS DECIMAL(10,2))`
+              lack:sql<number>`CAST(${goal.value} AS DECIMAL(10,2)) - CAST(${goal.have} AS DECIMAL(10,2))`
             })
             .from(goal)
             .where(eq(goal.id_account,sql`${id}::uuid`))
