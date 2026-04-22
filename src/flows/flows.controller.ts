@@ -33,6 +33,13 @@ export class FlowsController{
         console.log(req.user.id)
         return await this.flowsServices.getFlowByIdMyPage(req.user.id,page,search)
     }
+
+    @UseGuards(AuthGuard)
+    @Get('totalflows')
+    async getFlowByIdTotal(@Req() req:any){
+        console.log(req.user.id)
+        return await this.flowsServices.getFLowsDataTotal(req.user.id)
+    }
     
     @UseGuards(AuthGuard)
     @Get(':id')

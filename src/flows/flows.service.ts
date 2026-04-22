@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { db } from "../database/db.js";
 import type { IFlows } from "./interfaces/flows-type.js";
-import { eq,sql } from "drizzle-orm";
+import { eq,sql, sum } from "drizzle-orm";
 import {banks, flows} from "../database/schemas.js"
 import { schemaFlows } from "../schemas/schemas-zod.js";
 import { usePagination, usePaginationIdBanks } from "../hook/pagination.js";
@@ -66,6 +66,9 @@ export class FlowsServices{
    
     async getFlowByIdMy(id:string){
     try{
+        const sumEarn = sql`SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'ganho')`;
+        const sumExpense = sql`SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'gasto')`;
+        const sumTotal = sql`${sumEarn} - ${sumExpense}`;   
         const data=await db.select({id: flows.id,
             name: flows.name,
             type: flows.type,
@@ -75,7 +78,12 @@ export class FlowsServices{
             date: flows.date,
             bank:banks.name,
             id_bank:flows.id_name_banks,
-            compeCode:banks.compeCode})
+            compeCode:banks.compeCode,
+            sumEarn: sumEarn,
+            sumExpense: sumExpense,
+            sumTotal: sumTotal,
+            constant: flows.constant
+        })
         .from(flows)
         .leftJoin(banks,eq(flows.id_name_banks,banks.id))
         .where(eq(flows.id_account,sql`${id}::uuid`))
@@ -88,6 +96,27 @@ export class FlowsServices{
     catch(error){
         return {message:'Error getting flow', error}
     }}
+
+    async getFLowsDataTotal(id:string){
+            try{
+                const sumEarn = sql`SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'ganho')`;
+                const sumExpense = sql`SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'gasto')`;
+                const sumTotal = sql`${sumEarn} - ${sumExpense}`; 
+                const data=await db.select({id: flows.id,
+                    sumEarn: sumEarn,
+                    sumExpense: sumExpense,
+                    sumTotal: sumTotal,
+                })
+                .from(flows).where(eq(flows.id_account,sql`${id}::uuid`))
+                if(data.length===0){
+                    return {data:[{sumEarn:0,sumExpense:0,sumTotal:0}]}
+                }
+
+                return {message:'Flows found', data}
+            }catch(error){
+                return {message:'Error getting flow', error}
+            }
+    }
 
     async getFlowByIdMyPage(id:string,page?:any,search?:any){
     try{

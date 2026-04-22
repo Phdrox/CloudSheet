@@ -34,6 +34,7 @@ export const flows = pgTable("flows", {
   payment: varchar("payment", { length: 130 }).notNull(),
   price: varchar("price").notNull(),
   date: date("date").notNull(),
+  constant: boolean("constant").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updateAt: timestamp("updated_at").$onUpdate(() => new Date()).notNull(),
 })
