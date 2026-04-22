@@ -6,5 +6,6 @@ export interface IFlows{
     type:string,
     payment:string,
     price:string,
+    constant: boolean,
     date:Date| string| any,
 }
