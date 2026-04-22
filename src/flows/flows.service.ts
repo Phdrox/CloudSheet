@@ -92,9 +92,9 @@ export class FlowsServices{
 
     async getFLowsDataTotal(id:string){
             try{
-               const sumEarn = sql<number>`COALESCE(SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'ganho'), 0)`;
-             const sumExpense = sql<number>`COALESCE(SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'gasto'), 0)`;
-                const sumTotal = sql<number>`(${sumEarn}) - (${sumExpense})`;
+              const sumEarn = sql<number>`COALESCE(SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'ganho') OVER(), 0)`;
+              const sumExpense = sql<number>`COALESCE(SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'gasto') OVER(), 0)`;
+              const sumTotal = sql<number>`(${sumEarn}) - (${sumExpense})`;
                 const data=await db.select({id: flows.id,
                     sumEarn: sumEarn,
                     sumExpense: sumExpense,
