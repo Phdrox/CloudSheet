@@ -100,8 +100,8 @@ export class FlowsServices{
                     FROM (
                         SELECT 
                           strftime('%Y-%m', date) as month,
-                          SUM(CASE WHEN type = 'ganho' THEN CAST(price AS REAL) ELSE 0 END) as income,
-                          SUM(CASE WHEN type = 'gasto' THEN CAST(price AS REAL) ELSE 0 END) as expense
+                          COALESCE(SUM(CASE WHEN type = 'ganho' THEN CAST(price AS REAL) ELSE 0 END), OVER(), 0) as income,
+                          COALESCE(SUM(CASE WHEN type = 'gasto' THEN CAST(price AS REAL) ELSE 0 END), OVER(), 0) as expense
                         FROM flows WHERE id_account = ${id}::uuid 
                     GROUP BY month
                   )ORDER BY month
