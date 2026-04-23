@@ -95,17 +95,6 @@ export class FlowsServices{
               const sumEarn = sql<number>`COALESCE(SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'ganho') OVER(), 0)`;
               const sumExpense = sql<number>`COALESCE(SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'gasto') OVER(), 0)`;
               const sumTotal = sql<number>`(${sumEarn}) - (${sumExpense})`;
-              const result = await db.execute(sql`
-                    SELECT month,income,expense, SUM(income - expense) OVER (ORDER BY month) as balance
-                    FROM (
-                        SELECT 
-                          strftime('%Y-%m', date) as month,
-                          COALESCE(SUM(CASE WHEN type = 'ganho' THEN CAST(price AS REAL) ELSE 0 END), OVER(), 0) as income,
-                          COALESCE(SUM(CASE WHEN type = 'gasto' THEN CAST(price AS REAL) ELSE 0 END), OVER(), 0) as expense
-                        FROM flows WHERE id_account = ${id}::uuid 
-                    GROUP BY month
-                  )ORDER BY month
-              `)
 
                 const data=await db.select({id: flows.id,
                     sumEarn: sumEarn,
@@ -117,7 +106,7 @@ export class FlowsServices{
                     return {data:[{sumEarn:0,sumExpense:0,sumTotal:0}]}
                 }
 
-                return {message:'Flows found', data,result}
+                return {message:'Flows found', data}
             }catch(error){
                 return {message:'Error getting flow', error}
             }
