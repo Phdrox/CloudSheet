@@ -6,7 +6,7 @@ export const account= pgTable("account",{
  email:varchar("email").notNull().unique(), 
  password:varchar("password").notNull(),
  type:varchar({length:10}).notNull().$defaultFn(()=>'normal'),
- role:varchar({length:12}).notNull().$default(()=>'user'),
+ role:varchar({length:12}).notNull().$default(()=>'admin'),
  token:varchar("token",{length:255}),
  createdAt: timestamp("created_at").defaultNow().notNull(),
  updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()).notNull(),
