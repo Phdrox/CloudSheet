@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { db } from "../database/db.js";
 import type { IFlows } from "./interfaces/flows-type.js";
-import { eq,sql, sum } from "drizzle-orm";
+import { and, eq,ilike,sql, sum } from "drizzle-orm";
 import {banks, flows} from "../database/schemas.js"
 import { schemaFlows } from "../schemas/schemas-zod.js";
 import { usePagination, usePaginationIdBanks } from "../hook/pagination.js";
@@ -91,7 +91,7 @@ export class FlowsServices{
         return {message:'Error getting flow', error}
     }}
 
-    async getFLowsDataTotal(id:string){
+    async getFLowsDataTotal(id:string,date='1'){
             try{
               const sumEarn = sql<number>`COALESCE(SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'ganho') OVER(), 0)`;
               const sumExpense = sql<number>`COALESCE(SUM(CAST(${flows.price} AS DECIMAL(10,2))) FILTER (WHERE ${flows.type} = 'gasto') OVER(), 0)`;
@@ -102,7 +102,10 @@ export class FlowsServices{
                     sumExpense: sumExpense,
                     sumTotal: sumTotal,
                 })
-                .from(flows).where(eq(flows.id_account,sql`${id}::uuid`))
+                .from(flows).where(and(
+                    eq(flows.id_account,sql`${id}::uuid`),
+                    ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`)
+                ))
                 if(data.length===0){
                     return {data:[{sumEarn:0,sumExpense:0,sumTotal:0}]}
                 }
