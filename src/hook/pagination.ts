@@ -20,7 +20,7 @@ export async function usePagination({page=1,search=""}:PaginationsType,table:any
     
     const filter=(termSearch && searchColumn || date)?and(or(
     ilike(searchColumn,`%${termSearch}%`),
-    ilike(flows.date,`%${date}%`))
+    ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`))
     ):undefined
     const [totalResult, rows] = await Promise.all([
         db.select({ value: count() }).from(table).where(filter),
@@ -48,7 +48,7 @@ export async function usePaginationId({page=1,search=""}:PaginationsType,table:a
     
    const searchFilter = (termSearch && searchColumn) ? and(or(
     ilike(searchColumn,`%${termSearch}%`),
-    ilike(flows.date,`%${date}%`))) : undefined;
+    ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`))) : undefined;
     const userFilter = userId ? eq(table.id_account, userId) : undefined;
 
     const finalFilter = and(...[userFilter, searchFilter].filter(Boolean));
@@ -76,7 +76,7 @@ export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,ta
     
    const searchFilter = (termSearch && searchColumn) ? and(or(
     ilike(searchColumn,`%${termSearch}%`),
-    ilike(flows.date,`%${date}%`))): undefined;
+    ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`))): undefined;
     const userFilter = userId ? eq(table.id_account, sql`${userId}::uuid`) : undefined;
 
     const finalFilter = and(...[userFilter, searchFilter].filter(Boolean));
