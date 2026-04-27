@@ -1,4 +1,4 @@
-import { ilike, count,eq,and, sql} from "drizzle-orm";
+import { ilike, count,eq,and, sql, or} from "drizzle-orm";
 import z, { number, string,coerce, uuid } from "zod";
 import { db } from "../database/db.js";
 import { banks, flows } from "../database/schemas.js";
@@ -13,12 +13,15 @@ const schemaPaginationId=z.object({
 
 export type PaginationsType=z.input<typeof schemaPaginationId>
 
-export async function usePagination({page=1,search=""}:PaginationsType,table:any,searchColumn:any){
+export async function usePagination({page=1,search=""}:PaginationsType,table:any,searchColumn:any,date=""){
     const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
     
-    const filter=(termSearch && searchColumn)?ilike(searchColumn,`%${termSearch}%`):undefined
+    const filter=(termSearch && searchColumn || date)?and(or(
+    ilike(searchColumn,`%${termSearch}%`),
+    ilike(flows.date,`%${date}%`))
+    ):undefined
     const [totalResult, rows] = await Promise.all([
         db.select({ value: count() }).from(table).where(filter),
         db.select().from(table).where(filter).limit(limit).offset(offset)
@@ -38,12 +41,14 @@ export async function usePagination({page=1,search=""}:PaginationsType,table:any
 //PagginationID 
 export type PaginationsTypeId=z.infer<typeof schemaPaginationId>
 
-export async function usePaginationId({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string){
+export async function usePaginationId({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string,date=""){
     const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
     
-   const searchFilter = (termSearch && searchColumn) ? ilike(searchColumn, `%${termSearch}%`) : undefined;
+   const searchFilter = (termSearch && searchColumn) ? and(or(
+    ilike(searchColumn,`%${termSearch}%`),
+    ilike(flows.date,`%${date}%`))) : undefined;
     const userFilter = userId ? eq(table.id_account, userId) : undefined;
 
     const finalFilter = and(...[userFilter, searchFilter].filter(Boolean));
@@ -64,12 +69,14 @@ export async function usePaginationId({page=1,search=""}:PaginationsType,table:a
 }}
 
 
-export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string){
+export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string,date=""){
     const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
     
-   const searchFilter = (termSearch && searchColumn) ? ilike(searchColumn, `%${termSearch}%`) : undefined;
+   const searchFilter = (termSearch && searchColumn) ? and(or(
+    ilike(searchColumn,`%${termSearch}%`),
+    ilike(flows.date,`%${date}%`))): undefined;
     const userFilter = userId ? eq(table.id_account, sql`${userId}::uuid`) : undefined;
 
     const finalFilter = and(...[userFilter, searchFilter].filter(Boolean));

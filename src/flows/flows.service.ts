@@ -28,9 +28,9 @@ export class FlowsServices{
         }    
    }
 
-   async getFlows(page:any,search:any){
+   async getFlows(page:any,search:any,date:any){
     try{
-        const {data,meta}= await usePagination({page,search,limit:20},flows,flows.name)
+        const {data,meta}= await usePagination({page,search,limit:20},flows,flows.name,date)
         if(data.length===0){
             return {message:'No flows found'}
         }
@@ -43,8 +43,8 @@ export class FlowsServices{
 
    async getFlowById(id:string){
     try{
-        const data=await db.select(
-            {id: flows.id,
+        const data=await db.select({
+            id: flows.id,
             name: flows.name,
             type: flows.type,
             id_categories:flows.id_categories,
@@ -53,8 +53,9 @@ export class FlowsServices{
             date: flows.date,
             bank:banks.name,
             id_bank:flows.id_name_banks,
-            compeCode:banks.compeCode})
-            .from(flows).leftJoin(banks,eq(flows.id_name_banks,banks.id)).where(eq(flows.id,id))
+            compeCode:banks.compeCode
+        })
+        .from(flows).leftJoin(banks,eq(flows.id_name_banks,banks.id)).where(eq(flows.id,id))
         if(data.length===0){
             return {message:'Flow not found'}
         }
@@ -112,9 +113,9 @@ export class FlowsServices{
             }
     }
 
-    async getFlowByIdMyPage(id:string,page?:any,search?:any){
+    async getFlowByIdMyPage(id:string,page?:any,search?:any,date?:any){
     try{
-        const {data,meta}= await usePaginationIdBanks({page,search,limit:20},flows,flows.name,id)
+        const {data,meta}= await usePaginationIdBanks({page,search,limit:20},flows,flows.name,id,date)
         if(data.length===0){
             return {message:'Flow not found'}
         }      

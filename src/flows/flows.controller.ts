@@ -16,8 +16,8 @@ export class FlowsController{
     
     @UseGuards(AuthGuard)
     @Get('')
-    async getFlows(@Query('page') page: number,@Query('search') search:string ){
-        return await this.flowsServices.getFlows(page,search)
+    async getFlows(@Query('page') page: number,@Query('search') search:string, @Query('date') date:string ){
+        return await this.flowsServices.getFlows(page,search,date)
     }
     
     @UseGuards(AuthGuard)
@@ -29,9 +29,9 @@ export class FlowsController{
     
     @UseGuards(AuthGuard)
     @Get('allflows')
-    async getFlowByIdPage(@Query('page') page: number,@Query('search') search:string,@Req() req:any){
+    async getFlowByIdPage(@Query('page') page: number,@Query('search') search:string,@Req() req:any, @Query('date') date:string){
         console.log(req.user.id)
-        return await this.flowsServices.getFlowByIdMyPage(req.user.id,page,search)
+        return await this.flowsServices.getFlowByIdMyPage(req.user.id,page,search,date)
     }
 
     @UseGuards(AuthGuard)
