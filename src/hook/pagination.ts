@@ -13,15 +13,16 @@ const schemaPaginationId=z.object({
 
 export type PaginationsType=z.input<typeof schemaPaginationId>
 
-export async function usePagination({page=1,search=""}:PaginationsType,table:any,searchColumn:any,date=""){
+export async function usePagination({page=1,search=""}:PaginationsType,table:any,searchColumn:any,date="",type=""){
     const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
     
     const filter=(termSearch && searchColumn || date)?and(or(
     ilike(searchColumn,`%${termSearch}%`),
-    ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`))
-    ):undefined
+    ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`),
+    ilike(flows.type,type)
+)):undefined
     const [totalResult, rows] = await Promise.all([
         db.select({ value: count() }).from(table).where(filter),
         db.select().from(table).where(filter).limit(limit).offset(offset)
@@ -41,14 +42,16 @@ export async function usePagination({page=1,search=""}:PaginationsType,table:any
 //PagginationID 
 export type PaginationsTypeId=z.infer<typeof schemaPaginationId>
 
-export async function usePaginationId({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string,date=""){
+export async function usePaginationId({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string,date="",type=""){
     const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
     
    const searchFilter = (termSearch && searchColumn) ? and(or(
     ilike(searchColumn,`%${termSearch}%`),
-    ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`))) : undefined;
+    ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`),
+    ilike(flows.type,type)
+)) : undefined;
     const userFilter = userId ? eq(table.id_account, userId) : undefined;
 
     const finalFilter = and(...[userFilter, searchFilter].filter(Boolean));
@@ -69,14 +72,16 @@ export async function usePaginationId({page=1,search=""}:PaginationsType,table:a
 }}
 
 
-export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string,date=""){
+export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string,date="",type=""){
     const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
     
    const searchFilter = (termSearch && searchColumn) ? and(or(
     ilike(searchColumn,`%${termSearch}%`),
-    ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`))): undefined;
+    ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`),
+    ilike(flows.type,type)
+)): undefined;
     const userFilter = userId ? eq(table.id_account, sql`${userId}::uuid`) : undefined;
 
     const finalFilter = and(...[userFilter, searchFilter].filter(Boolean));
