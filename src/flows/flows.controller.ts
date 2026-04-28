@@ -36,9 +36,9 @@ export class FlowsController{
 
     @UseGuards(AuthGuard)
     @Get('totalflows')
-    async getFlowByIdTotal(@Req() req:any){
+    async getFlowByIdTotal(@Req() req:any,@Query('date') date:string){
         console.log(req.user.id)
-        return await this.flowsServices.getFLowsDataTotal(req.user.id)
+        return await this.flowsServices.getFLowsDataTotal(req.user.id,date)
     }
     
     @UseGuards(AuthGuard)
