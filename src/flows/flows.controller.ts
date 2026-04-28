@@ -22,9 +22,9 @@ export class FlowsController{
     
     @UseGuards(AuthGuard)
     @Get('myflows')
-    async getFlowById(@Req() req:any){
+    async getFlowById(@Req() req:any,@Query('date') date:string){
         console.log(req.user.id)
-        return await this.flowsServices.getFlowByIdMy(req.user.id)
+        return await this.flowsServices.getFlowByIdMy(req.user.id,date)
     }
     
     @UseGuards(AuthGuard)
