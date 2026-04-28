@@ -65,7 +65,7 @@ export class FlowsServices{
         return {message:'Error getting flow', error}
     }}
    
-    async getFlowByIdMy(id:string,date=1){
+    async getFlowByIdMy(id:string,date="1"){
     try{
         const data=await db.select({id: flows.id,
           name: flows.name,
