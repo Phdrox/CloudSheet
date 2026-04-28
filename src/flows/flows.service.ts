@@ -68,24 +68,23 @@ export class FlowsServices{
     async getFlowByIdMy(id:string,date=1){
     try{
         const data=await db.select({id: flows.id,
-            name: flows.name,
-            type: flows.type,
-            id_categories:flows.id_categories,
-            payment: flows.payment,
-            price: flows.price,
-            date: flows.date,
-            bank:banks.name,
-            id_bank:flows.id_name_banks,
-            compeCode:banks.compeCode,
+          name: flows.name,
+          type: flows.type,
+          id_categories:flows.id_categories,
+          payment: flows.payment,
+          price: flows.price,
+          date: flows.date,
+          bank:banks.name,
+          id_bank:flows.id_name_banks,
+          compeCode:banks.compeCode,
         })
         .from(flows)
         .leftJoin(banks,eq(flows.id_name_banks,banks.id))
         .where(
-            and(
-            eq(flows.id_account,sql`${id}::uuid`),
-            ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`)
-          )
-        )
+          and(
+          eq(flows.id_account,sql`${id}::uuid`),
+          ilike(sql`EXTRACT (MONTH FROM ${flows.date})::text`,`%${date}%`)
+        ))
         
         if(data.length===0){
             return {message:'Flow not found'}

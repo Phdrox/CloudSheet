@@ -13,7 +13,7 @@ const schemaPaginationId=z.object({
 
 export type PaginationsType=z.input<typeof schemaPaginationId>
 
-export async function usePagination({page=1,search=""}:PaginationsType,table:any,searchColumn:any,date="",type=""){
+export async function usePagination({page=1,search=""}:PaginationsType,table:any,searchColumn:any,date="1",type=""){
     const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
@@ -42,7 +42,7 @@ export async function usePagination({page=1,search=""}:PaginationsType,table:any
 //PagginationID 
 export type PaginationsTypeId=z.infer<typeof schemaPaginationId>
 
-export async function usePaginationId({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string,date="",type=""){
+export async function usePaginationId({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string,date="1",type=""){
     const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
@@ -72,7 +72,7 @@ export async function usePaginationId({page=1,search=""}:PaginationsType,table:a
 }}
 
 
-export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string,date="",type=""){
+export async function usePaginationIdBanks({page=1,search=""}:PaginationsType,table:any,searchColumn:any,userId?:string,date="1",type=""){
     const result=await schemaPaginationId.safeParseAsync({page,search})
     const {limit,offset, search:termSearch,page:currentPage}= result.success?result.data
     :{limit:20,page:0,search:'',offset:0}
