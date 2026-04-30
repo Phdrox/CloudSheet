@@ -74,5 +74,16 @@ export class AuthController{
     }
         return this.authService.refreshTokens(refreshToken,res)
     }
+
+    @Post('sendemail')
+    async sendEmail(@Body() email:string){
+        return this.authService.sendEmail(email)
+    }
+
+    @Post('resetpass')
+    async resetPass(@Body() code:string, @Body() password:string){
+        return this.authService.resetPassword(password,code)
+    }
+
 }
 

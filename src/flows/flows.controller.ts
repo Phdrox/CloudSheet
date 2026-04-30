@@ -23,21 +23,18 @@ export class FlowsController{
     @UseGuards(AuthGuard)
     @Get('myflows')
     async getFlowById(@Req() req:any,@Query('date') date:string){
-        console.log(req.user.id)
         return await this.flowsServices.getFlowByIdMy(req.user.id,date)
     }
     
     @UseGuards(AuthGuard)
     @Get('allflows')
     async getFlowByIdPage(@Query('page') page: number,@Query('search') search:string,@Req() req:any, @Query('date') date:string){
-        console.log(req.user.id)
         return await this.flowsServices.getFlowByIdMyPage(req.user.id,page,search,date)
     }
 
     @UseGuards(AuthGuard)
     @Get('totalflows')
     async getFlowByIdTotal(@Req() req:any,@Query('date') date:string){
-        console.log(req.user.id)
         return await this.flowsServices.getFLowsDataTotal(req.user.id,date)
     }
     

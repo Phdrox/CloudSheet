@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
+    "@nestjs-modules/mailer": "^2.3.4",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.0.1",
@@ -42,8 +43,10 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.1",
+    "handlebars": "^4.7.9",
     "neon": "^2.0.0",
     "neondatabase": "0.0.1-security",
+    "nodemailer": "^8.0.7",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

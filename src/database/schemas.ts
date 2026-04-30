@@ -8,6 +8,7 @@ export const account= pgTable("account",{
  type:varchar({length:10}).notNull().$defaultFn(()=>'normal'),
  role:varchar({length:12}).notNull().$default(()=>'admin'),
  token:varchar("token",{length:255}),
+ code:varchar("code_pass").$defaultFn(()=>''),
  createdAt: timestamp("created_at").defaultNow().notNull(),
  updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()).notNull(),
 })
