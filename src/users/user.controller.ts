@@ -24,19 +24,6 @@ export class UserController{
     }
 
     
-    @Roles('admin')
-    @Put(":id")
-    async putUser(@Body() id:UUID, data:User,type:string){
-        return await this.userService.putUserById(id,data,type)
-    }
-    
-    
-    @Roles('admin')
-    @Delete(':id')
-    async deleteUser(@Param() id:UUID){
-        return await this.userService.deleteUser(id)
-    }
-    
     @Public()
     @Put('sendemail')
     async sendEmail(@Body('email') email:string){
@@ -47,5 +34,17 @@ export class UserController{
     @Put('resetpass')
     async resetPass(@Body() data: { code: string, password: string }){
         return await this.userService.resetPassword(data.password,data.code)
+    }
+
+    @Roles('admin')
+    @Put(":id")
+    async putUser(@Body() id:UUID, data:User,type:string){
+        return await this.userService.putUserById(id,data,type)
+    }
+
+    @Roles('admin')
+    @Delete(':id')
+    async deleteUser(@Param() id:UUID){
+        return await this.userService.deleteUser(id)
     }
 }
