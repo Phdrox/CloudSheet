@@ -3,7 +3,7 @@ import { User, UsersService } from "./users.service.js";
 import type { UUID } from "crypto";
 import { AuthGuard } from "../auth/auth.guard.js";
 import { Roles } from "../roles/roles.decorator.js";
-import { Public } from "src/roles/public.decorator.js";
+import { Public } from "../roles/public.decorator.js";
 
 @Controller('/users')
 export class UserController{

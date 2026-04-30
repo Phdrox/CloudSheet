@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import {ConfigModule} from "@nestjs/config";
-import { UsersService } from './users/users.service.js';
 import { FlowsServices } from './flows/flows.service.js';
 import { FlowsController } from './flows/flows.controller.js';
 import { GoalServices } from './goal/goal.service.js';
