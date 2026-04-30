@@ -19,9 +19,11 @@ export class AuthGuard implements CanActivate{
 
    async canActivate(context:ExecutionContext):Promise<boolean>{
          const request=context.switchToHttp().getRequest<Request & { user?: any }>();
-         
-         const isPublic = this.reflector.get<boolean>( IS_PUBLIC_KEY,context.getHandler(),) ?? 
-         this.reflector.get<boolean>(IS_PUBLIC_KEY,context.getClass(),);
+         // Corrigido: usar getAllAndOverride para garantir leitura correta do metadata
+         const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+           context.getHandler(),
+           context.getClass(),
+         ]);
 
         if (isPublic) {
           return true;
