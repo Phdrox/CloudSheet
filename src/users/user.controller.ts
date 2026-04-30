@@ -5,7 +5,7 @@ import { AuthGuard } from "../auth/auth.guard.js";
 import { Roles } from "../roles/roles.decorator.js";
 import { Public } from "../roles/public.decorator.js";
 
-@UseGuards(AuthGuard)
+
 @Controller('/users')
 export class UserController{
 
