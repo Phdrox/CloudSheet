@@ -119,6 +119,7 @@ export class AuthService {
             subject:"Resete de Senha",
             template:'template',
         })
+        return {code:geradorDeCodigo()}
     }
    }
 
