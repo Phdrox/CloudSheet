@@ -75,15 +75,5 @@ export class AuthController{
         return await this.authService.refreshTokens(refreshToken,res)
     }
 
-    @Put('sendemail')
-    async sendEmail(@Body() email:string){
-        return await this.authService.sendEmail(email)
-    }
-
-    @Put('resetpass')
-    async resetPass(@Body() code:string, @Body() password:string){
-        return await this.authService.resetPassword(password,code)
-    }
-
 }
 

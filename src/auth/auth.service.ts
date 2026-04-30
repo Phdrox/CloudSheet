@@ -6,7 +6,7 @@ import { Response } from 'express';
 import { db } from '../database/db.js';
 import { account } from '../database/schemas.js';
 import { eq } from 'drizzle-orm';
-import {MailerService} from "@nestjs-modules/mailer"
+
 
 type IUser={
     email:string;
@@ -22,7 +22,7 @@ export class AuthService {
     constructor(
         private  userServices:UsersService,
         private  jwtService:JwtService,
-        private readonly mailerService:MailerService
+        
     ){}
 
    async signIn({email,password}:IUser):Promise<any>{
@@ -100,39 +100,7 @@ export class AuthService {
     }catch{}
    }
  
-   async sendEmail(email:string){
-    const geradorDeCodigo=()=>{
-        const caracteres= "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        let resultado="";
-        for (let i=0;i<5;i++){
-            const indiceAleatorio=Math.floor(Math.random() * caracteres.length);
-            resultado+=caracteres.charAt(indiceAleatorio);
-        }
-        return resultado
-    }
-    
-    const user= await db.select().from(account).where(eq(account.email,email))
-    if(user.length>0 && user){
-        await db.update(account).set({code:geradorDeCodigo()})
-        await this.mailerService.sendMail({
-            to:user[0].email,
-            subject:"Resete de Senha",
-            template:'template',
-        })
-        return {code:geradorDeCodigo()}
-    }
-   }
-
-   async resetPassword(password:string,code:string){
-      const codePass= await db.select({code:account.code}).from(account).where(eq(account.code,code))
-      if(codePass){
-        await db.update(account).set({password:await hash(password)})
-        return {message:'Senha atualizada com sucesso'}
-      }else{
-        return {error:"Falha ao resetar senha"}
-      }
-   }
-   
+  
 
 
 }

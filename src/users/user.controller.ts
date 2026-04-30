@@ -36,5 +36,15 @@ export class UserController{
         return await this.userService.deleteUser(id)
     }
 
+    @Put('sendemail')
+    async sendEmail(@Body() email:string){
+        return await this.userService.sendEmail(email)
+    }
+
+    @Put('resetpass')
+    async resetPass(@Body() code:string, @Body() password:string){
+        return await this.userService.resetPassword(password,code)
+    }
+
 
 }
