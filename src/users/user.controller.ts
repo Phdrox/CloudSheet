@@ -44,7 +44,7 @@ export class UserController{
 
     @Public()
     @Put('resetpass')
-    async resetPass(@Body() code:string, @Body() password:string){
-        return await this.userService.resetPassword(password,code)
+    async resetPass(@Body() data: { code: string, password: string }){
+        return await this.userService.resetPassword(data.password,data.code)
     }
 }
