@@ -72,17 +72,17 @@ export class AuthController{
         if (!refreshToken) {
         throw new UnauthorizedException("Refresh token não encontrado");
     }
-        return this.authService.refreshTokens(refreshToken,res)
+        return await this.authService.refreshTokens(refreshToken,res)
     }
 
     @Put('sendemail')
     async sendEmail(@Body() email:string){
-        return this.authService.sendEmail(email)
+        return await this.authService.sendEmail(email)
     }
 
     @Put('resetpass')
     async resetPass(@Body() code:string, @Body() password:string){
-        return this.authService.resetPassword(password,code)
+        return await this.authService.resetPassword(password,code)
     }
 
 }
