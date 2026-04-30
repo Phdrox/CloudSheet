@@ -152,24 +152,32 @@ export class UsersService {
 
             const user= await db.select().from(account).where(eq(account.email,email))
             if(user.length>0 && user){
-                await db.update(account).set({code:geradorDeCodigo()})
-                await this.mailerService.sendMail({
-                    to:user[0].email,
-                    subject:"Resete de Senha",
-                    template:'template',
-                })
-                return {code:geradorDeCodigo()}
+                try{
+                    await db.update(account).set({code:geradorDeCodigo()})
+                    await this.mailerService.sendMail({
+                        to:user[0].email,
+                        subject:"Resete de Senha",
+                        template:'template',
+                    })
+                    return {code:geradorDeCodigo()}
+                }catch(error){
+                    return {error}
+                }
             }
         }
 
         async resetPassword(password:string,code:string){
            const codePass= await db.select({code:account.code}).from(account).where(eq(account.code,code))
-           if(codePass){
-             await db.update(account).set({password:await hash(password)})
-             return {message:'Senha atualizada com sucesso'}
-           }else{
-             return {error:"Falha ao resetar senha"}
-           }
+           try{
+              if(codePass){
+                await db.update(account).set({password:await hash(password)})
+                return {message:'Senha atualizada com sucesso'}
+              }else{
+                return {error:"Falha ao resetar senha"}
+              }
+          }catch(err){
+            return {error:err}
+          }
         }
    
 
