@@ -3,12 +3,12 @@ import { User, UsersService } from "./users.service.js";
 import type { UUID } from "crypto";
 import { AuthGuard } from "../auth/auth.guard.js";
 import { Roles } from "../roles/roles.decorator.js";
+import { Public } from "src/roles/public.decorator.js";
 
 @Controller('/users')
 export class UserController{
 
     constructor( private readonly userService:UsersService){}
-    
     @UseGuards(AuthGuard)
     @Roles('admin')
     @Get("")
@@ -32,19 +32,19 @@ export class UserController{
     @UseGuards(AuthGuard)
     @Roles('admin')
     @Delete(':id')
-    async deleteUser(@Body() id:UUID){
+    async deleteUser(@Param() id:UUID){
         return await this.userService.deleteUser(id)
     }
-
+    
+    @Public()
     @Put('sendemail')
     async sendEmail(@Body() email:string){
         return await this.userService.sendEmail(email)
     }
 
+    @Public()
     @Put('resetpass')
     async resetPass(@Body() code:string, @Body() password:string){
         return await this.userService.resetPassword(password,code)
     }
-
-
 }
