@@ -38,14 +38,12 @@ export class UserController{
     }
     
     @Public()
-    @Roles('user','admin')
     @Put('sendemail')
-    async sendEmail(@Body() email:string){
+    async sendEmail(@Body('email') email:string){
         return await this.userService.sendEmail(email)
     }
 
     @Public()
-    @Roles('user','admin')
     @Put('resetpass')
     async resetPass(@Body() data: { code: string, password: string }){
         return await this.userService.resetPassword(data.password,data.code)
