@@ -8,7 +8,6 @@ import { Public } from "../roles/public.decorator.js";
 
 @Controller('/users')
 export class UserController{
-
     constructor( private readonly userService:UsersService){}
     
     @Roles('admin')

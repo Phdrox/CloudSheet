@@ -155,12 +155,8 @@ export class UsersService {
                 const novoCodigo=geradorDeCodigo()
                 try{
                     await db.update(account).set({code:novoCodigo}).where(eq(account.email,email))
-                    await this.mailerService.sendMail({
-                        to:user[0].email,
-                        subject:"Resete de Senha",
-                        template:'template',
-                        context:{code:novoCodigo}                    })
-                    return {message:"email enviado com sucesso",code:novoCodigo}
+
+                    return {code:novoCodigo}
                 }catch(error){
                     return {error}
                 }
@@ -175,6 +171,7 @@ export class UsersService {
             try{
               if(codePass){
                 await db.update(account).set({password:await hash(password)}).where(eq(account.code, code));
+                await db.update(account).set({code:''}).where(eq(account.code, code));
                 return {message:'Senha atualizada com sucesso'}
               }else{
                 return {error:"Falha ao resetar senha"}
