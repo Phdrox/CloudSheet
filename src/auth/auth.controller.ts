@@ -3,13 +3,15 @@ import { AuthService } from "./auth.service.js";
 import { AuthGuard } from "./auth.guard.js";
 import {User} from "../users/users.service.js"
 import { Request, Response } from "express";
+import { Public } from "src/roles/public.decorator.js";
 
 @Controller('auth')
 export class AuthController{
     constructor( 
         private authService:AuthService,
     ){}
-
+    
+    @Public()
     @HttpCode(HttpStatus.OK)
     @Post('login')
     async sign(@Body() signInDto: Record<string, any>, @Res({ passthrough: true }) res: Response){
@@ -32,7 +34,8 @@ export class AuthController{
 
         return {message:"Logado com sucesso"};
     }
-
+    
+    @Public()
     @Post('register')
     register(@Body() signUp:User){
       return this.authService.signUp(signUp)
