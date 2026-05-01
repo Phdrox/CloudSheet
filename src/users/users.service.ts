@@ -5,7 +5,6 @@ import { account } from "../database/schemas.js"
 import { UUID } from "crypto"
 import {hash,verify} from "argon2"
 import { JwtService } from "@nestjs/jwt"
-import {MailerService} from "@nestjs-modules/mailer"
 import { eq } from 'drizzle-orm';
 
 export type User={
@@ -19,7 +18,6 @@ export class UsersService {
 
        constructor(
         private jwtService:JwtService,
-        private readonly mailerService:MailerService
        ){}
         async getAllUsers(){
             const collumAccount={id:account.id,name:account.name,email:account.email,created:account.createdAt}
