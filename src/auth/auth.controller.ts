@@ -3,7 +3,7 @@ import { AuthService } from "./auth.service.js";
 import { AuthGuard } from "./auth.guard.js";
 import {User} from "../users/users.service.js"
 import { Request, Response } from "express";
-import { Public } from "src/roles/public.decorator.js";
+import { Public } from "../roles/public.decorator.js";
 
 @Controller('auth')
 export class AuthController{
